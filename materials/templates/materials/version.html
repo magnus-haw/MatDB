@@ -1,0 +1,97 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+<div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-md-7">
+
+        <!-- Title -->
+	<h1 class="mt-4">{{matv}}</h1>
+        <hr>
+        <!-- Preview Image 
+        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+        -->
+
+        <!-- Post Content -->
+
+        <!-- Variable Properties -->
+	{% for varprop in varprops %}
+        <div class="card mb-4">
+          <div class="card-body" id="studentday">
+            <h2 class="card-title">{{varprop}}</h2>
+            <table class="simple-table">
+            <tr>
+                 <th>Pressure(Pa)</th>
+                 <th>Temperature(K)</th>
+                 <th>cp (J/kg/K)</th>
+                 <th>h (J/kg)</th>
+                 <th>ki (W/m/K)</th>
+                 <th>kj (W/m/K)</th>
+                 <th>kk (W/m/K)</th>
+                 <th>emissivity (-)</th>
+                 <th>absorptivity (-)</th>
+            </tr>
+            {% for row in varprop.get_rows %}
+            <tr>
+              {% for val in row %}
+                <th>{{val}}</th>
+              {% endfor %}
+            </tr>
+            {% endfor %}
+            </table>
+          </div>
+          <div class="card-footer text-muted">
+            Last modified: {{varprop.last_modified}}
+          </div>
+        </div>
+	{% endfor %}
+        <hr>
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      <div class="col-md-5">
+
+        <!-- Constant Properties Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Constant Properties</h5>
+          <div class="card-body">
+            <table class="simple-table">
+            {% for prop in constprops %}
+               <tr>
+                 <th>{{prop.name}}</th>
+                 <th>{{prop.value}}</th>
+                 <th>{{prop.description}}</th>
+               </tr>
+            {% endfor %}
+            </table>
+          </div>
+        </div>
+        <!-- End Constant Properties Widget -->
+
+        <!-- Matrix Properties Widget -->
+        <div class="card my-4">
+          <h5 class="card-header">Matrix Properties</h5>
+          <div class="card-body">
+            <table>
+            {% for prop in matrixprops %}
+               <tr>
+                 <th>prop.name</th>
+                 <th>prop.value</th>
+                 <th>prop.description</th>
+               </tr>
+            {% endfor %}
+            </table>
+          </div>
+        </div>
+        <!-- End Matrix Properties Widget -->
+        
+
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+{% endblock %}
+
+
+{% block lastupdated %}{{current.last_modified}}{% endblock %}
