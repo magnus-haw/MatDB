@@ -12,9 +12,12 @@ from .models import Material, MaterialVersion, VariableProperties, ConstProperty
 def index(request):
     nmat = Material.objects.count()
     mats = Material.objects.all()
+    last_modified = mats.latest('last_modified').last_modified
+
     context = {
         'materials':mats,
         'nmaterials':nmat,
+        'last_modified':last_modified,
             }
     return render(request, 'materials/index.html', context=context)
 
@@ -36,11 +39,13 @@ def material_version_view(request,matv_pk):
     matv = get_object_or_404(MaterialVersion, pk=matv_pk)
     constprops = matv.constproperty_set.all()
     varprops = matv.variableproperties_set.all().order_by('state')
-    
+    matrixprops = matv.matrixproperty_set.all().order_by('state')
     context = {
             'matv':matv,
             'constprops':constprops,
             'varprops':varprops,
+            'matrixprops':matrixprops,
+
             }
     return render(request, 'materials/version.html', context = context)
 

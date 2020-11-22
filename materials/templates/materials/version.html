@@ -22,15 +22,15 @@
             <h2 class="card-title">{{varprop}}</h2>
             <table class="simple-table">
             <tr>
-                 <th>Pressure(Pa)</th>
-                 <th>Temperature(K)</th>
-                 <th>cp (J/kg/K)</th>
-                 <th>h (J/kg)</th>
-                 <th>ki (W/m/K)</th>
-                 <th>kj (W/m/K)</th>
-                 <th>kk (W/m/K)</th>
-                 <th>emissivity (-)</th>
-                 <th>absorptivity (-)</th>
+                 <th style='font-weight: bold'>Pressure(Pa)</th>
+                 <th style='font-weight: bold'>Temperature(K)</th>
+                 <th style='font-weight: bold'>cp (J/kg/K)</th>
+                 <th style='font-weight: bold'>h (J/kg)</th>
+                 <th style='font-weight: bold'>ki (W/m/K)</th>
+                 <th style='font-weight: bold'>kj (W/m/K)</th>
+                 <th style='font-weight: bold'>kk (W/m/K)</th>
+                 <th style='font-weight: bold'>emissivity (-)</th>
+                 <th style='font-weight: bold'>absorptivity (-)</th>
             </tr>
             {% for row in varprop.get_rows %}
             <tr>
@@ -59,7 +59,7 @@
             <table class="simple-table">
             {% for prop in constprops %}
                <tr>
-                 <th>{{prop.name}}</th>
+                 <th style='font-weight: bold'>{{prop.name}}</th>
                  <th>{{prop.value}}</th>
                  <th>{{prop.description}}</th>
                </tr>
@@ -76,9 +76,9 @@
             <table>
             {% for prop in matrixprops %}
                <tr>
-                 <th>prop.name</th>
-                 <th>prop.value</th>
-                 <th>prop.description</th>
+                 <th style="font-weight: bold">{{prop.name}}</th>
+                 <th>{{prop.value}}</th>
+                 <th>{{prop.description}}</th>
                </tr>
             {% endfor %}
             </table>
@@ -94,4 +94,4 @@
 {% endblock %}
 
 
-{% block lastupdated %}{{current.last_modified}}{% endblock %}
+{% block lastupdated %}{{matv.last_modified}}{% endblock %}

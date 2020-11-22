@@ -19,7 +19,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="https://engage.aps.org/dpp/home"><img class="d-flex mr-3 rounded-circle" src="{% static 'imgs/new.png' %}" alt=""></a>
+      <a class="navbar-brand" href=""><img class="d-flex mr-3 rounded-circle" src="{% static 'imgs/new.png' %}" alt=""></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -28,7 +28,12 @@
           <li class="nav-item {% block homemenu %}{% endblock %}">
             <a class="nav-link" href="/">Home
             <span class="sr-only">(current)</span>
-	    </a>
+	          </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin:index' %}">Login
+            <span class="sr-only">(current)</span>
+	          </a>
           </li>
           <!--
 	  <li class="nav-item {% block aboutmenu %}{% endblock %}">

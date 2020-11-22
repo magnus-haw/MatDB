@@ -18,11 +18,16 @@ display: block;
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  font-weight: normal;
 }
 
 .simple-table td, th {
   border: 1px solid #ddd;
   padding: 8px;
+}
+
+th {
+  font-weight: normal;
 }
 
 .simple-table th {
