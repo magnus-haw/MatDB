@@ -12,8 +12,9 @@ class MaterialAdmin(admin.ModelAdmin):
     search_fields = ('name','description')
 
 class MaterialVersionAdmin(admin.ModelAdmin):
-    list_display  = ('material','version','rating','notes','date')
-    search_fields = ('material__name','version','rating','notes','date')
+    list_display  = ('material','version','grade','notes','date')
+    list_filter = ('material', 'grade')
+    search_fields = ('material__name','version','grade','notes','date')
 
 class VariablePropertiesAdmin(admin.ModelAdmin):
     list_display  = ('material','state','references','last_modified')

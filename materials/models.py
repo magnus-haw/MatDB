@@ -1,4 +1,5 @@
 from django.db import models
+from units.models import BaseUnit, ComboUnit
 import numpy as np
 
 # Create your models here.
@@ -25,7 +26,7 @@ class MyArrayField(models.TextField):
 
 class Material(models.Model):
     name = models.CharField(max_length=500,unique=True)
-    short_name = models.CharField(max_length=10,unique=True,null=True,blank=True)
+    short_name = models.CharField(max_length=25,unique=True,null=True,blank=True)
     description = models.TextField(blank=True,null=True)
     last_modified = models.DateField(auto_now=True)
 
@@ -37,10 +38,18 @@ MATERIAL_RATING = (
     (1,'Tested'),
     (2,'Validated')
 )
+
+MATERIAL_GRADES = (
+    ('A','Validated'),
+    ('B','Limited Validation'),
+    ('C','Low Confidence Tests'),
+    ('D','Estimate Only'),
+    ('F','Inconsistent')
+)
 class MaterialVersion(models.Model):
     material = models.ForeignKey(Material,on_delete=models.CASCADE)
-    version = models.CharField(max_length=10,unique=True)
-    rating = models.PositiveIntegerField(choices=MATERIAL_RATING,null=True,blank=True)
+    version = models.CharField(max_length=25,unique=True)
+    grade = models.CharField(max_length=1,choices=MATERIAL_GRADES,null=True,blank=True)
     notes = models.TextField(blank=True,null=True)
     datasheet = models.FileField(blank=True,null=True)
     date = models.DateField()
@@ -97,6 +106,7 @@ class VariableProperties(models.Model):
 
 class ConstProperty(models.Model):
     material = models.ForeignKey(MaterialVersion,on_delete=models.CASCADE)
+    unit = models.ForeignKey(ComboUnit,on_delete=models.CASCADE,null=True,blank=True)
     name = models.CharField(max_length=50)
     description = models.TextField(null=True,blank=True)
     value = models.FloatField()
@@ -122,3 +132,4 @@ class MatrixProperty(models.Model):
 
     class Meta:
         verbose_name_plural = "Matrix properties"
+

@@ -38,7 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'materials',
+    'itarmaterials',
+    'units',
+    'articles',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,3 +131,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'MatDB/static/')
 #     os.path.join(BASE_DIR, 'MatDB/static/'),  # Here you tell django to look for a folder named 'assets'
 # ]
 print(BASE_DIR, STATIC_ROOT)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'MatDB/media/')
