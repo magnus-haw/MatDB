@@ -35,25 +35,55 @@
       <div class="col-md-4 mb-5">
         <div class="card h-100">
           <div class="card-body">
-		  <h2 class="card-title">{{mat.name}}</h2>
-		  <p class="card-text"> {{mat.description}}
-	    <div class="row"><div class="col-md-12">
-             <strong><p>Material Versions</p></strong>
+		        <h2 class="card-title">{{mat.name}}</h2>
+		        <p class="card-text"> {{mat.description}}
+	          <div class="row"><div class="col-md-12">
+              <strong><p>Material Versions</p></strong>
             </div></div>
-	    <div class="row"><div class="col-md-12">
-	    <ul>
-          {% for matv in mat.materialversion_set.all %}
-	      <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
-	      {% endfor %}
-            </ul>
+	          <div class="row"><div class="col-md-12">
+	            <ul>
+              {% for matv in mat.materialversion_set.all %}
+	              <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
+	            {% endfor %}
+              </ul>
             </div></div>
           </div>
+          <!-- /.card-body -->
           <div class="card-footer">
-            <a href="#" class="btn btn-primary btn-sm">More Info</a>
+            <a href="{% url 'material-detail' mat.pk %}" class="btn btn-primary btn-sm">More Info</a>
           </div>
         </div>
+        <!-- /.card -->
       </div>
-      {% endfor %}
+    {% endfor %}
+    
+    {% if perms.itarmaterials.view_itarmaterial %}
+    {% for mat in itars %}
+      <div class="col-md-4 mb-5">
+        <div class="card h-100">
+          <div class="card-body">
+		        <h2 class="card-title">{{mat.name}}</h2>
+		        <p class="card-text"> {{mat.description}}
+	          <div class="row"><div class="col-md-12">
+              <strong><p>Material Versions</p></strong>
+            </div></div>
+	          <div class="row"><div class="col-md-12">
+	            <ul>
+              {% for matv in mat.materialversion_set.all %}
+	              <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
+	            {% endfor %}
+              </ul>
+            </div></div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+            <a href="{% url 'material-detail' mat.pk %}" class="btn btn-primary btn-sm">More Info</a>
+          </div>
+        </div>
+        <!-- /.card -->
+      </div>
+    {% endfor %}
+    {% endif %}
 
     </div>
     <!-- /.row -->

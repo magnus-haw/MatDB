@@ -47,7 +47,9 @@
   
   {% block pageheader %}{% endblock %}
   <!-- Main Container -->
-  <div class="container-fluid">
+  {% block maincontainer%}
+  <div class="container">
+  {% endblock %}
      {% block sidebar %}
      {% endblock %}
 

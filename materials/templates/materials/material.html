@@ -1,0 +1,89 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">{{material.name}}</h1>
+
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/materials/">Home</a>
+      </li>
+      <li class="breadcrumb-item active">{{material.name}}</li>
+    </ol>
+
+    <!-- Intro Content -->
+    <div class="row">
+      <div class="col-lg-6">
+        <img class="img-fluid rounded mb-4" src="{{material.image.url}}" alt="">
+      </div>
+      <div class="col-lg-6">
+        <h2>Overview</h2>
+        <p>{{material.description}}</p>
+      </div>
+    </div>
+    <!-- /.row -->
+<hr>
+    <!-- Material versions -->
+    <div class="row">
+
+      <div class="col-lg-4 mb-4">
+        <div class="card h-100 text-left">
+          <div class="card-body">
+            <h4 class="card-title">Property versions</h4>            
+
+            <div class="row">
+              <div class="col-md-12">
+                <ul>
+                {% for matv in material.materialversion_set.all %}
+                <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
+                {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+          </div>
+          
+        </div>
+      </div>
+      <!-- /.card -->
+
+      <div class="col-lg-4 mb-4">
+        <div class="card h-100 text-left">
+          <div class="card-body">
+            <h4 class="card-title">References</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <ul>
+                {% for ref in references %}
+                <li><a href="{% url 'reference-detail' ref.pk %}">{{ref.title}}</a></li>
+                {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <!-- /.card -->
+      
+      <div class="col-lg-4 mb-4">
+        <div class="card h-100 text-left">
+          <div class="card-body">
+            <h4 class="card-title">Test data</h4>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>
+          </div>
+          
+        </div>
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+{% endblock %}
+
+<!-- Footer -->
+  {% block lastupdated %}{{material.last_modified}}{% endblock %}

@@ -1,33 +1,38 @@
 from django.contrib import admin
-from .models import ITARMaterial, ITARMaterialVersion, ITARVariableProperties, ITARConstProperty, ITARMatrixProperty
+from .models import ITARMaterial, ITARMaterialVersion, ITARVariableProperties
+from .models import ITARConstProperty, ITARMatrixProperty, ITARReference
+from materials.admin import ConstPropertyAdmin, MaterialAdmin, VariablePropertiesAdmin
+from materials.admin import MatrixPropertyAdmin, MaterialVersionAdmin, ReferenceAdmin
 
 # Register your models here
-class ITARConstPropertyAdmin(admin.ModelAdmin):
-    list_display= ('name', 'material','state', 'value', 'description', 'last_modified')
-    list_filter = ('material', 'state', 'last_modified')
-    search_fields = ('name', 'material__material__name','material__version','state', 'value', 'description', 'last_modified')
+class ITARConstPropertyAdmin(ConstPropertyAdmin):
+    pass
 
-class ITARMaterialAdmin(admin.ModelAdmin):
-    list_display= ('name','description')
-    search_fields = ('name','description')
+class ITARMaterialAdmin(MaterialAdmin):
+    pass
 
-class ITARMaterialVersionAdmin(admin.ModelAdmin):
-    list_display  = ('material','version','grade','notes','date')
-    list_filter = ('material', 'grade')
-    search_fields = ('material__name','version','grade','notes','date')
+class ITARReferenceAdmin(ReferenceAdmin):
+    pass
 
-class ITARVariablePropertiesAdmin(admin.ModelAdmin):
-    list_display  = ('material','state','references','last_modified')
-    search_fields = ('material__material__name','state','references','last_modified')
-    list_filter = ('material', 'state', 'last_modified')
+class ITARReferenceInline(admin.StackedInline):
+    model = ITARReference
+    extra = 0
+    readonly_fields = ['created_at','last_modified','modified_by',]
 
-class ITARMatrixPropertyAdmin(admin.ModelAdmin):
-    list_display = ('name','material','state','description','value','last_modified')
-    search_fields = ('name','material__material__name','material__version','state','description','value','last_modified')
-    list_filter = ('material', 'state', 'last_modified')
+class ITARMaterialVersionAdmin(MaterialVersionAdmin):
+    inlines = [
+        ITARReferenceInline,
+    ]
+
+class ITARVariablePropertiesAdmin(VariablePropertiesAdmin):
+    pass
+
+class ITARMatrixPropertyAdmin(MatrixPropertyAdmin):
+    pass
 
 admin.site.register(ITARMaterial,ITARMaterialAdmin)
 admin.site.register(ITARMaterialVersion,ITARMaterialVersionAdmin)
 admin.site.register(ITARVariableProperties,ITARVariablePropertiesAdmin)
 admin.site.register(ITARConstProperty, ITARConstPropertyAdmin)
 admin.site.register(ITARMatrixProperty,ITARMatrixPropertyAdmin)
+admin.site.register(ITARReference,ITARReferenceAdmin)
