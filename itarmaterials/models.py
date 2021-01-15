@@ -1,5 +1,5 @@
 from django.db import models
-from materials.models import AbstractMaterial, AbstractMaterialVersion, AbstractVariableProperties
+from materials.models import AbstractMaterial, AbstractMaterialVersion, AbstractVariableProperty
 from materials.models import AbstractConstProperty, AbstractMatrixProperty, AbstractReference
 
 #################################################################################
@@ -7,6 +7,8 @@ from materials.models import AbstractConstProperty, AbstractMatrixProperty, Abst
 #################################################################################
 
 class ITARMaterial(AbstractMaterial):
+    def isITAR(self):
+        return True
 
     class Meta:
         verbose_name_plural = "ITAR Materials"
@@ -14,29 +16,44 @@ class ITARMaterial(AbstractMaterial):
 class ITARMaterialVersion(AbstractMaterialVersion):
     material = models.ForeignKey(ITARMaterial,on_delete=models.CASCADE)
     
+    def isITAR(self):
+        return True
+
     class Meta:
         verbose_name_plural = "ITAR Material versions"
 
-class ITARVariableProperties(AbstractVariableProperties):
-    material = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
+class ITARVariableProperty(AbstractVariableProperty):
+    material_version = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
+
+    def isITAR(self):
+        return True
 
     class Meta:
         verbose_name_plural = "ITAR Variable properties"
 
 class ITARConstProperty(AbstractConstProperty):
-    material = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
+    material_version = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
     
+    def isITAR(self):
+        return True
+
     class Meta:
         verbose_name_plural = "ITAR Constant properties"
 
 class ITARMatrixProperty(AbstractMatrixProperty):
-    material = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
+    material_version = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
+
+    def isITAR(self):
+        return True
 
     class Meta:
         verbose_name_plural = "ITAR Matrix properties"
 
 class ITARReference(AbstractReference):
-    material = models.ForeignKey(ITARMaterialVersion, on_delete=models.SET_NULL, null=True)
+    material_version = models.ForeignKey(ITARMaterialVersion, on_delete=models.SET_NULL, null=True)
     
+    def isITAR(self):
+        return True
+        
     class Meta:
         verbose_name_plural = "ITAR References"

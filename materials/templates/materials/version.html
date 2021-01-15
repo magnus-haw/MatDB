@@ -1,66 +1,112 @@
 {% extends "base_generic.html" %}
 
 {% block maincontainer %}
-  <div class="container-fluid">
+  <div class="container">
 {% endblock %}
 {% block content %}
+
+<!-- Title -->
+<h1 class="mt-4 mb-3">{{matv.material.name}}&nbsp;{{matv.version}}</h1><hr>
+<ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/materials/">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        {% if matv.isITAR %}
+          <a href="{% url 'itarmaterial-detail' matv.material.pk %}">{{matv.material.name}}</a>
+        {% else %}
+          <a href="{% url 'material-detail' matv.material.pk %}">{{matv.material.name}}</a>
+        {% endif %}
+      </li>
+      <li class="breadcrumb-item active">{{matv.material.name}}&nbsp;{{matv.version}}</li>
+</ol>
 
 <div class="row">
 
       <!-- Post Content Column -->
-      <div class="col-md-7">
+      <div class="col-lg-8">
 
-        <!-- Title -->
-	<h1 class="mt-4">{{matv}}</h1>
-        <hr>
         <!-- Preview Image 
         <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
         -->
 
         <!-- Post Content -->
+        <div class="card mb-4">
+          <h5 class="card-header">Version information</h5>
+          <div class="card-body" id="vinfo">
+            <div class="row no-gutters">
+                <div class="col-lg-6">
+                  <table class="simple-table">
+                    <tr> <th style='font-weight: bold'>Version:</th> <td>{{matv.version}}</td> </tr>
+                    <tr> <th style='font-weight: bold'>Published:</th> <td>{{matv.published}}</td> </tr>
+                    <tr> <th style='font-weight: bold'>Material grade:</th> <td>{{matv.get_grade_display}}</td> </tr>
+                    <tr> <th style='font-weight: bold'>Lead POC:</th> <td>{{matv.material_lead}} </td> </tr>
+                    <tr> <th style='font-weight: bold'>Material SME:</th> <td>{{matv.material_expert}} </td> </tr>
+                    <tr> <th style='font-weight: bold'>Modeling SME:</th> <td>{{matv.modeling_expert}} </td> </tr>
+                    <tr> <th style='font-weight: bold'>Other POC:</th> <td>{{matv.other_contact}}</td> </tr>
+                      {% if matv.datasheet %}
+                    <tr> <th>Datasheet: <a href="{{matv.datasheet.url}}">download</a></li>
+                      {% endif %}
+                  </table>
+                </div>
+                <div class="col-lg-6">
+                    <h5>Notes:</h5>
+                    <p>{{matv.notes|linebreaks}}</p>
+                </div>
+            </div>
+          </div>
+          <div class="card-footer text-muted">
+            Last modified: {{matv.last_modified}}&nbsp;by&nbsp;{{matv.modified_by}} 
+          </div>
+        </div>
+	
+        <hr>
 
         <!-- Variable Properties -->
-	{% for varprop in varprops %}
+	
         <div class="card mb-4">
-          <div class="card-body" id="studentday">
-            <h2 class="card-title">{{varprop}}</h2>
-            <table class="simple-table">
+          <h5 class="card-header">Variable properties</h5>
+          <div class="card-body" id="varprops">
+            <table class="simple-table" style="font-size: 12px;">
             <tr>
-                 <th style='font-weight: bold'>Pressure(Pa)</th>
-                 <th style='font-weight: bold'>Temperature(K)</th>
-                 <th style='font-weight: bold'>cp (J/kg/K)</th>
-                 <th style='font-weight: bold'>h (J/kg)</th>
-                 <th style='font-weight: bold'>ki (W/m/K)</th>
-                 <th style='font-weight: bold'>kj (W/m/K)</th>
-                 <th style='font-weight: bold'>kk (W/m/K)</th>
-                 <th style='font-weight: bold'>emissivity (-)</th>
-                 <th style='font-weight: bold'>absorptivity (-)</th>
+              <th></th>
+              <th style='font-weight: bold'>State</th>
+              <th style='font-weight: bold'>Pressure(Pa)</th>
+              <th style='font-weight: bold'>Temperature(K)</th>
+              <th style='font-weight: bold'>Values</th>
+              <th style='font-weight: bold'>Units</th>
             </tr>
-            {% for row in varprop.get_rows %}
+            {% for var in varprops%}
             <tr>
-              {% for val in row %}
-                <th>{{val}}</th>
-              {% endfor %}
+              <th style='font-weight: bold'>{{var.name}}</th>
+              <td>{{var.get_state_display}}</td>
+              <td>{{var.p.min}}&nbsp;&#8658;&nbsp;{{var.p.max|stringformat:"1.2e"}}</td>
+              <td>{{var.T.min}}&nbsp;&#8658;&nbsp;{{var.T.max}}</td>
+              <td style="text-align:right">{{var.values.min|stringformat:".2e"}}&nbsp;&#8658;&nbsp;{{var.values.max|stringformat:".2e"}}</td>
+              <td>{{var.unit.symbol}}</td>
             </tr>
             {% endfor %}
+            
             </table>
           </div>
+          <!--
           <div class="card-footer text-muted">
             Last modified: {{varprop.last_modified}}
           </div>
+          -->
         </div>
-	{% endfor %}
+	
         <hr>
       </div>
 
       <!-- Sidebar Widgets Column -->
-      <div class="col-md-5">
+      <div class="col-lg-4 col-md-6">
 
         <!-- Constant Properties Widget -->
-        <div class="card my-4">
-          <h5 class="card-header">Constant Properties</h5>
+        <div class="card mb-4">
+          <h5 class="card-header">Constant properties</h5>
           <div class="card-body">
-            <table class="simple-table">
+            <table class="simple-table" style="font-size: 12px;">
             {% for prop in constprops %}
                <tr>
                  <th style='font-weight: bold'>{{prop.name}}</th>
@@ -77,7 +123,7 @@
         <div class="card my-4">
           <h5 class="card-header">Matrix Properties</h5>
           <div class="card-body">
-            <table>
+            <table class="simple-table" style="font-size: 12px;">
             {% for prop in matrixprops %}
                <tr>
                  <th style="font-weight: bold">{{prop.name}}</th>

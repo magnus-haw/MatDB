@@ -27,6 +27,7 @@ urlpatterns = [
 
 urlpatterns += [
     path('materials/',include('materials.urls')),
+    path('itarmaterials/',include('itarmaterials.urls')),
 ]
 
 urlpatterns += [

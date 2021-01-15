@@ -35,9 +35,15 @@
             <div class="row">
               <div class="col-md-12">
                 <ul>
-                {% for matv in material.materialversion_set.all %}
-                <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
-                {% endfor %}
+                {% if material.isITAR %}
+                  {% for matv in material.itarmaterialversion_set.all %}
+                  <li><a href="{% url 'itarversion-detail' matv.pk %}">{{matv.version}}</a></li>
+                  {% endfor %}
+                {% else %}
+                  {% for matv in material.materialversion_set.all %}
+                  <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
+                  {% endfor %}
+                {% endif %}
                 </ul>
               </div>
             </div>
@@ -48,17 +54,32 @@
       </div>
       <!-- /.card -->
 
-      <div class="col-lg-4 mb-4">
+      <div class="col-lg-8 mb-4">
         <div class="card h-100 text-left">
           <div class="card-body">
             <h4 class="card-title">References</h4>
             <div class="row">
               <div class="col-md-12">
-                <ul>
-                {% for ref in references %}
-                <li><a href="{% url 'reference-detail' ref.pk %}">{{ref.title}}</a></li>
-                {% endfor %}
-                </ul>
+                <table class="simple-table" style="font-size: 12px;">
+                  <tr>
+                    <th>Author(s)</th>
+                    <th>Title</th>
+                    <th>RefType</th>
+                    <th>Published</th>
+                  </tr>
+                  
+                    {% for ref in references %}
+                    <tr>
+                      <td>{{ref.authors}}</td>
+                      {% if material.isITAR %}
+                        <td><a href="{% url 'itarreference-detail' ref.pk %}">{{ref.title}}</a></td>
+                      {% else %}
+                        <td><a href="{% url 'reference-detail' ref.pk %}">{{ref.title}}</a></td>
+                      {% endif %}
+                      <td>{{ref.get_reftype_display}}</td>
+                      <td>{{ref.published}}</td>
+                    {% endfor %}                  
+                </table>
               </div>
             </div>
           </div>
@@ -67,16 +88,6 @@
       </div>
       <!-- /.card -->
       
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 text-left">
-          <div class="card-body">
-            <h4 class="card-title">Test data</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>
-          </div>
-          
-        </div>
-      </div>
-      <!-- /.card -->
     </div>
     <!-- /.row -->
 

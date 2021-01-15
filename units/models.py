@@ -52,6 +52,7 @@ class BaseUnitPower(models.Model):
 class ComboUnit(models.Model):
     name = models.CharField(max_length=20)
     symbol = models.CharField(max_length=20)
+    alternate_names = models.TextField(null=True, blank=True)
 
     def dims(self):
         alldims = np.zeros(7)

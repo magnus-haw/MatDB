@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import ITARMaterial, ITARMaterialVersion, ITARVariableProperties
+from .models import ITARMaterial, ITARMaterialVersion, ITARVariableProperty
 from .models import ITARConstProperty, ITARMatrixProperty, ITARReference
-from materials.admin import ConstPropertyAdmin, MaterialAdmin, VariablePropertiesAdmin
+from materials.admin import ConstPropertyAdmin, MaterialAdmin, VariablePropertyAdmin
 from materials.admin import MatrixPropertyAdmin, MaterialVersionAdmin, ReferenceAdmin
 
 # Register your models here
@@ -24,7 +24,7 @@ class ITARMaterialVersionAdmin(MaterialVersionAdmin):
         ITARReferenceInline,
     ]
 
-class ITARVariablePropertiesAdmin(VariablePropertiesAdmin):
+class ITARVariablePropertyAdmin(VariablePropertyAdmin):
     pass
 
 class ITARMatrixPropertyAdmin(MatrixPropertyAdmin):
@@ -32,7 +32,7 @@ class ITARMatrixPropertyAdmin(MatrixPropertyAdmin):
 
 admin.site.register(ITARMaterial,ITARMaterialAdmin)
 admin.site.register(ITARMaterialVersion,ITARMaterialVersionAdmin)
-admin.site.register(ITARVariableProperties,ITARVariablePropertiesAdmin)
+admin.site.register(ITARVariableProperty,ITARVariablePropertyAdmin)
 admin.site.register(ITARConstProperty, ITARConstPropertyAdmin)
 admin.site.register(ITARMatrixProperty,ITARMatrixPropertyAdmin)
 admin.site.register(ITARReference,ITARReferenceAdmin)

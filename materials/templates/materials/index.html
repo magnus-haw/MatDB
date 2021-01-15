@@ -69,15 +69,15 @@
             </div></div>
 	          <div class="row"><div class="col-md-12">
 	            <ul>
-              {% for matv in mat.materialversion_set.all %}
-	              <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
+              {% for matv in mat.itarmaterialversion_set.all %}
+	              <li><a href="{% url 'itarversion-detail' matv.pk %}">{{matv.version}}</a></li>
 	            {% endfor %}
               </ul>
             </div></div>
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
-            <a href="{% url 'material-detail' mat.pk %}" class="btn btn-primary btn-sm">More Info</a>
+            <a href="{% url 'itarmaterial-detail' mat.pk %}" class="btn btn-primary btn-sm">More Info</a>
           </div>
         </div>
         <!-- /.card -->

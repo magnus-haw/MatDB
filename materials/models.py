@@ -5,6 +5,8 @@ from units.models import BaseUnit, ComboUnit
 from contacts.models import Person
 
 import numpy as np
+from scipy import interpolate
+
 from ckeditor_uploader.fields import RichTextUploadingField
 from ckeditor.fields import RichTextField
 
@@ -36,6 +38,9 @@ class BaseModel(models.Model):
     last_modified = models.DateField(auto_now=True)
     modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
         null=True, blank=True, on_delete=models.SET_NULL)
+
+    def isITAR(self):
+        return False
 
     class Meta:
         abstract = True
@@ -95,58 +100,40 @@ MATERIAL_STATES = (
     (1,'Char'),
     (2,'Pyrolysis')
 )
-class AbstractVariableProperties(BaseModel):
-    material = models.ForeignKey(MaterialVersion, on_delete=models.CASCADE)
-    state = models.PositiveIntegerField(choices=MATERIAL_STATES, default=0)
+
+class AbstractVariableProperty(BaseModel):
+    material_version = models.ForeignKey(MaterialVersion, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
+    state = models.PositiveIntegerField(choices=MATERIAL_STATES, default=0, verbose_name='Material state')
+    # using SI units for p,T
+    p = MyArrayField(null=True, blank=True, verbose_name='Pressure [Pa]') #Pascals
+    T = MyArrayField(null=True, blank=True, verbose_name='Temperature [K]') #Kelvin
+    values = MyArrayField(null=True, blank=True)
     
-    # Assume using SI units for all properties
-    p = MyArrayField(null=True, blank=True)
-    T = MyArrayField(null=True, blank=True)
-    cp = MyArrayField(null=True, blank=True)
-    h = MyArrayField(null=True, blank=True)
-    ki = MyArrayField(null=True, blank=True)
-    kj = MyArrayField(null=True, blank=True)
-    kk = MyArrayField(null=True, blank=True)
-    emissivity = MyArrayField(null=True, blank=True)
-    absorptivity = MyArrayField(null=True, blank=True)
-
     def __str__(self):
-        if self.state == 0:
-            mystate = "Virgin"
-        elif self.state == 1:
-            mystate = "Char"
-        else:
-            mystate = "Pyrolysis"
-        return self.material.material.name + "_VariableProperties_"+ mystate
+        return self.name
 
-    @property
-    def get_rows(self):
-        arrays = [self.p,self.T,self.cp,self.h,self.ki,self.kj,self.kk,
-                  self.emissivity, self.absorptivity]
-        rows = []
-        for i in range(0,len(self.p)):
-            row=[]
-            for ar in arrays:
-                row.append(ar[i])
-            rows.append(row)
-        return rows
+    def interp(self,new_p,new_T):
+        f = interpolate.interp2d(self.p,self.T,self.values, kind='linear')
+        return f(new_p,new_T)
 
     class Meta:
         abstract = True
 
-class VariableProperties(AbstractVariableProperties):
+class VariableProperty(AbstractVariableProperty):
 
     class Meta:
         verbose_name_plural = "Variable properties"
 
 class AbstractConstProperty(BaseModel):
-    material = models.ForeignKey(MaterialVersion,on_delete=models.CASCADE)
-    unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
+    material_version = models.ForeignKey(MaterialVersion,on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    description = models.TextField(null=True,blank=True)
-    value = models.FloatField()
+    unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
     state = models.PositiveIntegerField(choices=MATERIAL_STATES,default=0)
-    
+    description = models.TextField(null=True,blank=True)
+    value = models.FloatField(null=True)
+        
     def __str__(self):
         return self.name
 
@@ -159,7 +146,7 @@ class ConstProperty(AbstractConstProperty):
         verbose_name_plural = "Constant properties"
 
 class AbstractMatrixProperty(BaseModel):
-    material = models.ForeignKey(MaterialVersion,on_delete=models.CASCADE)
+    material_version = models.ForeignKey(MaterialVersion,on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     description = models.TextField(null=True,blank=True)
     value = models.CharField(max_length=500)
@@ -182,11 +169,13 @@ REFERENCE_TYPES = (
     (2,'Book'),
     (3,'Test data'),
     (4,'Sim data'),
-    (5,'Other')
+    (5,'Poster'),
+    (6,'Presentation'),
+    (7,'Other'),
 )
 
 class AbstractReference(BaseModel):
-    material = models.ForeignKey(MaterialVersion, on_delete=models.SET_NULL, null=True)
+    material_version = models.ForeignKey(MaterialVersion, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length = 500)
     doc_num = models.CharField(max_length = 100, null=True, blank=True)
     reftype = models.PositiveIntegerField(choices=REFERENCE_TYPES, default=0)

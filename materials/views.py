@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.db import transaction
 
-from .models import Material, MaterialVersion, VariableProperties 
+from .models import Material, MaterialVersion, VariableProperty 
 from .models import ConstProperty, MatrixProperty, Reference
 from itarmaterials.models import ITARMaterial
 
@@ -27,7 +27,7 @@ def index(request):
 
 def material_view(request,matpk):
     mat = get_object_or_404(Material, pk=matpk)
-    refs = Reference.objects.filter(material__material = mat)
+    refs = Reference.objects.filter(material_version__material = mat)
 
     context = {
             'material':mat,
@@ -46,7 +46,7 @@ def reference_view(request,pk):
 def material_version_view(request,matv_pk):
     matv = get_object_or_404(MaterialVersion, pk=matv_pk)
     constprops = matv.constproperty_set.all()
-    varprops = matv.variableproperties_set.all().order_by('state')
+    varprops = matv.variableproperty_set.all().order_by('state')
     matrixprops = matv.matrixproperty_set.all().order_by('state')
     context = {
             'matv':matv,
