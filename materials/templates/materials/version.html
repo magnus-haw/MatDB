@@ -32,7 +32,7 @@
 
         <!-- Post Content -->
         <div class="card mb-4">
-          <h5 class="card-header">Version information</h5>
+          <h5 class="card-header">Property graph</h5>
           <div class="card-body" id="vinfo">
             <div class="row no-gutters">
                 <div class="col-lg-6">
@@ -78,7 +78,13 @@
             </tr>
             {% for var in varprops%}
             <tr>
-              <th style='font-weight: bold'>{{var.name}}</th>
+              <th style='font-weight: bold'>
+              {% if var.isITAR %}
+                <a href="{% url 'itarvprop-detail' var.pk %}">{{var.name}}</a>
+              {% else %}
+                <a href="{% url 'vprop-detail' var.pk %}">{{var.name}}</a>
+              {% endif %}
+              </th>
               <td>{{var.get_state_display}}</td>
               <td>{{var.p.min}}&nbsp;&#8658;&nbsp;{{var.p.max|stringformat:"1.2e"}}</td>
               <td>{{var.T.min}}&nbsp;&#8658;&nbsp;{{var.T.max}}</td>

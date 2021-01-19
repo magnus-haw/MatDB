@@ -1,0 +1,97 @@
+{% extends "base_generic.html" %}
+
+{% block header %}
+  <!-- Bokeh plotting JS and CSS -->
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.3.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.2.3.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.2.3.min.js" crossorigin="anonymous"></script>
+
+  {{ script | safe }}
+{% endblock %}
+
+
+{% block content %}
+<!-- Title -->
+<h1 class="mt-4 mb-3">{{vprop.name}}&nbsp;&nbsp;{{vprop.material_version.material.name}}&nbsp;{{vprop.material_version.version}}</h1><hr>
+<ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/materials/">Home</a>
+      </li>
+      
+        {% if vprop.isITAR %}
+        <li class="breadcrumb-item">
+          <a href="{% url 'itarmaterial-detail' vprop.material_version.material.pk %}">{{vprop.material_version.material.name}}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'itarversion-detail' vprop.material_version.pk %}">{{vprop.material_version.version}}</a>
+        </li>
+        {% else %}
+        <li class="breadcrumb-item">
+          <a href="{% url 'material-detail' vprop.material_version.material.pk %}">{{vprop.material_version.material.name}}</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'version-detail' vprop.material_version.pk %}">{{vprop.material_version.version}}</a>
+        </li>
+        {% endif %}
+        <li class="breadcrumb-item active">{{vprop.name}}</li>
+</ol>
+
+<div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+
+        <!-- Preview Image 
+        <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+        -->
+
+        <!-- Post Content -->
+        <div class="card mb-4">
+          <h5 class="card-header">Property graph</h5>
+          <div class="card-body" id="vinfo">
+            <div class="row"><div class="col-lg-12">
+                {{ div | safe }}
+            </div></div>
+          </div>
+          <div class="card-footer text-muted">
+            Last modified: {{vprop.last_modified}}&nbsp;by&nbsp;{{vprop.modified_by}} 
+          </div>
+        </div>     
+	
+        <hr>
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      <div class="col-lg-4 col-md-6">
+
+        <!-- Constant Properties Widget -->
+        <div class="card mb-4">
+          <h5 class="card-header">Values</h5>
+          <div class="card-body">
+            <table class="simple-table" style="font-size: 12px;">
+            <tr>
+              <th style='font-weight: bold'>Pressure(Pa)</th>
+              <th style='font-weight: bold'>Temperature(K)</th>
+              <th style='font-weight: bold'>{{vprop.unit.symbol}}</th>
+            </tr>
+            {% for p,T,val in items %}
+               <tr>
+                 <td>{{p}}</td>
+                 <td>{{T}}</td>
+                 <td>{{val}}</td>
+               </tr>
+            {% endfor %}
+            </table>
+          </div>
+        </div>
+        <!-- End Constant Properties Widget -->
+        
+
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+{% endblock %}
+
+
+{% block lastupdated %}{{vprop.material_version.last_modified}}{% endblock %}
