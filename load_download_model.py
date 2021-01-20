@@ -20,7 +20,7 @@ for i in range(1,3):
         matv = get_object_or_404(MaterialVersion, pk=i)
         for name in export_models:
             code_name = name
-            file_name = matv.material.name + "_" + matv.version + "_" + name
+            file_name = name + "_" + matv.material.name + "_" + matv.version
             down,flag = DownloadModel.objects.get_or_create(material=matv, code_name=code_name, file_name=file_name)
             down.save()
 

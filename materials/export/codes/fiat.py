@@ -1,4 +1,4 @@
-class fiat_export_model():
-    def __init__(self, a):
-        self.a = a
-        print("fiat export model")
+from .base import *
+
+class fiat_export_model(base_export_model):
+    pass
