@@ -80,11 +80,28 @@ class pato_export_model(base_export_model):
                     + "// e.g. W: kg m^2 s^{-3}        [1 2 -3 0 0 0 0]\n\n" \
                     + "/****           Universal constants                                             ****/\n" \
                     + "R               R               [1 2 -2 -1 -1 0 0]      8.314471469;\n" \
-                    + "sigmaPlanck     sigmaPlanck     [1 0 -3 -1 0 0 0]       5.6697e-8;\n\n"
+                    + "sigmaPlanck     sigmaPlanck     [1 0 -3 -1 0 0 0]       5.6697e-8;\n\n" \
+                    + "/***            Anisotropic conductivity parameters: main directions and linear factors         ***/\n" \
+                    + "//              kxyz = tP & kijk' & P\n" \
+                    + "// 1- Express the main directions (ijk) of the diagonal conductivity matrix in the basis of the mesh (xyz) \n" \
+                    + "//                                                      (i j k)                 ex. rotation a (in radians) around axis z\n" \
+                    + "tP              tP              [0 0 0 0 0 0 0]         (1 0 0   // x           (cosa -sina 0\n" \
+                    + "                                                         0 1 0   // y            sina  cosa 0\n" \
+                    + "                                                         0 0 1); // z            0       0  1)\n" \
+                    + "// 2 - Linear factors\n" \
+                    + "kiCoef          kiCoef          [0 0 0 0 0 0 0]         1;       // to multiply column ki of the input files 'char' and 'virgin' by a linear factor: ki' = kiCoef*ki\n" \
+                    + "kjCoef          kjCoef          [0 0 0 0 0 0 0]         1;       // idem for kj\n" \
+                    + "kkCoef          kkCoef          [0 0 0 0 0 0 0]         1;       // idem for kk\n\n"
+
         f_const.write(header_const)
         constprops = self.matv.constproperty_set.all()
+        order=[1,0,2,5,3,4,6] # OpenFOAM units order [Mass Length Time Temperature Quantity	Current Luminous]
+        scalar_list=["nSolidPhases","Zx[","nPyroReac["]
         for i in constprops:
-            dims = i.unit.dims()
+            dims_tmp = i.unit.dims()
+            dims=dims_tmp.copy()
+            for j, order_j in enumerate(order):
+                dims[order_j] = dims_tmp[j]
             units_to_OF = "["
             for j, dims_j in enumerate(dims):
                 end = " "
@@ -93,8 +110,31 @@ class pato_export_model(base_export_model):
                 units_to_OF = units_to_OF + str(int(dims_j)) + end
             name = i.name
             name = name.split(" ")[0] # remove the units in the name
-            f_const.write("// " + name + "\n")
-            f_const.write(name + " " + name  + " " + units_to_OF + " " + str(i.value) + "\n\n")
+            f_const.write("// " + name + ": " + i.description + "\n")
+            scalar = False
+            for j in scalar_list:
+                if (name.find(j) >= 0):
+                    scalar = True
+            if scalar:
+                f_const.write(name  + " " + str(i.value) + ";\n\n")
+            else:
+                f_const.write(name + " " + name + " " + units_to_OF + " " + str(i.value) + ";\n\n")
+        matrixprops = self.matv.matrixproperty_set.all()
+        for i in matrixprops:
+            dims_tmp = i.unit.dims()
+            dims = dims_tmp.copy()
+            for j, order_j in enumerate(order):
+                dims[order_j] = dims_tmp[j]
+            units_to_OF = "["
+            for j, dims_j in enumerate(dims):
+                end = " "
+                if j == len(dims) - 1:
+                    end = "]"
+                units_to_OF = units_to_OF + str(int(dims_j)) + end
+            name = i.name
+            name = name.split(" ")[0]  # remove the units in the name
+            f_const.write("// " + name + ": " + i.description + "\n")
+            f_const.write(name + " " + name + " " + units_to_OF + " " + str(i.value) + ";\n\n")
         f_const.close()
         zip_file = zipfile.ZipFile(folder_name+".zip", 'w', zipfile.ZIP_DEFLATED)
         zipdir(folder_name, zip_file)

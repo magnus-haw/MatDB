@@ -149,6 +149,7 @@ class AbstractMatrixProperty(BaseModel):
     material_version = models.ForeignKey(MaterialVersion,on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     description = models.TextField(null=True,blank=True)
+    unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
     value = models.CharField(max_length=500)
     state = models.PositiveIntegerField(choices=MATERIAL_STATES,default=0)
 

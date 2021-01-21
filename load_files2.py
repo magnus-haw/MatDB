@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import re
+import sys
 from io import StringIO
 
 ### Loading files into database.
@@ -75,7 +76,6 @@ def upload_PATO_fmt(matName, Pform, ITAR=False):
                 for unit in units:
                     if ustrings[0][1:-1] in unit.alternate_names:
                         vprop.unit = unit
-            
             vprop.save()
     
     names, vals, notes = Pform['const_names'],Pform['const_vals'],Pform['const_notes']
@@ -87,14 +87,14 @@ def upload_PATO_fmt(matName, Pform, ITAR=False):
             state = 2
 
         # extract units
-        ustrings = re.findall('\(.*?\)',names[i])
+        ustrings = re.findall('\((?s:.*)\)',names[i])
         if len(ustrings) == 1 and ustrings[0] != '(-)':
             for unit in units:
-                if ustrings[0][1:-1] in unit.alternate_names:
+                l = re.split("\r\n", unit.alternate_names)
+                if ustrings[0][1:-1] in l:
                     myunit = unit
         else:
             myunit = none_unit
-
         if vals[i][0] == '(':
             if ITAR:
                 mx,flag = ITARMatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state)
@@ -127,18 +127,41 @@ if __name__=="__main__":
     from units.models import ComboUnit
     from datetime import date
 
-    folder = "materials/"
-    fname1 = folder + "Cork_v1.csv"
-    fname2 = folder + "TACOT_v3.csv"
+    if "delete" in sys.argv:
+        ConstProperty.objects.all().delete()
+        MatrixProperty.objects.all().delete()
+        VariableProperty.objects.all().delete()
+        ITARConstProperty.objects.all().delete()
+        ITARMatrixProperty.objects.all().delete()
+        ITARVariableProperty.objects.all().delete()
 
-    # Load Cork file
-    Pform1 = parse_PATO_material_csv(fname1)
-    upload_PATO_fmt('Cork', Pform1)
+    if "update" in sys.argv:
+        folder = "materials/"
+        fname1 = folder + "Cork_v1.csv"
+        fname2 = folder + "TACOT_v3.csv"
 
-    # Load TACOT file
-    Pform2 = parse_PATO_material_csv(fname2)
-    upload_PATO_fmt('TACOT', Pform2)
-    
-    # Load TACOT file
-    Pform2 = parse_PATO_material_csv(fname2)
-    upload_PATO_fmt('HEEET', Pform2, ITAR=True)
+        # Load Cork file
+        Pform1 = parse_PATO_material_csv(fname1)
+        upload_PATO_fmt('Cork', Pform1)
+
+        # Load TACOT file
+        Pform2 = parse_PATO_material_csv(fname2)
+        upload_PATO_fmt('TACOT', Pform2)
+
+        # Load TACOT file
+        Pform2 = parse_PATO_material_csv(fname2)
+        upload_PATO_fmt('HEEET', Pform2, ITAR=True)
+
+    if "print" in sys.argv:
+        print("ConstProperty.objects.count()=",end="")
+        print(ConstProperty.objects.count())
+        print("MatrixProperty.objects.count()=",end="")
+        print(MatrixProperty.objects.count())
+        print("VariableProperty.objects.count()=",end="")
+        print(VariableProperty.objects.count())
+        print("ITARConstProperty.objects.count()=", end="")
+        print(ITARConstProperty.objects.count())
+        print("ITARMatrixProperty.objects.count()=", end="")
+        print(ITARMatrixProperty.objects.count())
+        print("ITARVariableProperty.objects.count()=", end="")
+        print(ITARVariableProperty.objects.count())

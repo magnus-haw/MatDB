@@ -21,7 +21,7 @@ class BaseUnit(models.Model):
         return self.name
 
     def dims(self):
-        return np.array([self.length_dim, self.mass_dim, self.time_dim, 
+        return np.array([self.length_dim, self.mass_dim, self.time_dim,
                          self.current_dim, self.temp_dim, self.mole_dim, self.luminous_dim])
     
     def same_dims(self,newunit):
@@ -57,7 +57,7 @@ class ComboUnit(models.Model):
     def dims(self):
         alldims = np.zeros(7)
         for member in self.baseunitpower_set.all():
-            alldims += member.unit.dims()
+            alldims += member.unit.dims()*member.power
         return alldims
     
     def same_dims(self,newunit):
