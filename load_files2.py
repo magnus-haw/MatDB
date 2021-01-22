@@ -139,6 +139,6 @@ if __name__=="__main__":
     Pform2 = parse_PATO_material_csv(fname2)
     upload_PATO_fmt('TACOT', Pform2)
     
-    # Load TACOT file
+    # Load TACOT file into HEEET
     Pform2 = parse_PATO_material_csv(fname2)
     upload_PATO_fmt('HEEET', Pform2, ITAR=True)

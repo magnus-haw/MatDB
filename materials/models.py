@@ -76,7 +76,7 @@ MATERIAL_GRADES = (
 )
 class AbstractMaterialVersion(BaseModel):
     material = models.ForeignKey(Material,on_delete=models.CASCADE)
-    version = models.CharField(max_length=25,unique=True)
+    version = models.CharField(max_length=25)
     grade = models.CharField(max_length=1,choices=MATERIAL_GRADES,null=True,blank=True)
     material_lead = models.ForeignKey(Person, blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_material_lead')
     material_expert = models.ForeignKey(Person, blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_material_expert')

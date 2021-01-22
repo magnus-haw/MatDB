@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'materials',
     'itarmaterials',
     'units',
+    'software',
     'contacts',
     'ckeditor',
     'ckeditor_uploader',

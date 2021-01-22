@@ -3,6 +3,7 @@
 {% block maincontainer %}
   <div class="container">
 {% endblock %}
+
 {% block content %}
 
 <!-- Title -->
@@ -21,75 +22,26 @@
       <li class="breadcrumb-item active">{{matv.material.name}}&nbsp;{{matv.version}}</li>
 </ol>
 <hr>
-<style>
-.dropbtn {
-  border-radius: 5px;
-  background-color: DodgerBlue;
-  color: white;
-  padding: 16px 40px;
-  font-size: 20px;
-  border: none;
-  cursor: pointer;
-}
 
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.downloadbutton {
-  background-color: #f9f9f9;
-  border: green;
-  color: black;
-  overflow: auto;
-  padding: 10px 32px;
-  min-width: 160px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2)
-}
-
-.downloadbutton:hover {background-color: #ddd}
-
-.dropdown-content a:hover {background-color: #f1f1f1}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: RoyalBLue;
-}
-</style>
-<div class="dropdown">
-    <button class="dropbtn">Export</button>
-    <div id="myDropdown" class="dropdown-content">
-    {% for i in download %}
-    <form method="post">
-    {% csrf_token %}
-    <button class="downloadbutton" type="submit" name="export_codes" value="{{i.code_name}}">{{i.code_name}}</button>
-    </form>
-    {% endfor %}
+<div class="row"> <!-- download/upload buttons -->
+  
+  <div class="col-lg-2 col-md-2 col-sm-4">
+    <div class="dropdown">
+        <button class="dropbtn btn btn-primary">Export</button>
+        <div id="myDropdown" class="dropdown-content">
+        {% for i in download %}
+        <form method="post">
+        {% csrf_token %}
+        <button class="downloadbutton" type="submit" name="export_codes" value="{{i.software_version.pk}}">{{i.software_version.software.name}}</button>
+        </form>
+        {% endfor %}
+        </div>
     </div>
+  </div>
+  <!--end col -->
 </div>
+<!-- end row -->
+
 <hr>
 <div class="row">
 
