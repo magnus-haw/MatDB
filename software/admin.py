@@ -20,6 +20,12 @@ class ExportFormatAdmin(BaseAdmin):
     list_filter = ('last_modified',)
     search_fields = ('material_version', 'software_version','description','last_modified')
 
+class TutorialAdmin(BaseAdmin):
+    list_display= ('name', 'link', 'software_version','last_modified', 'short_description')
+    list_filter = ('software_version','last_modified',)
+    search_fields = ('name','link','software_version','description','last_modified', 'short_description')
+
 admin.site.register(Software, SoftwareAdmin)
 admin.site.register(SoftwareVersion, SoftwareVersionAdmin)
 admin.site.register(ExportFormat, ExportFormatAdmin)
+admin.site.register(Tutorial, TutorialAdmin)

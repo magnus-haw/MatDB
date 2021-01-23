@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% block materialmenu %}active{% endblock %}
+
 {% block content %}
 
     <!-- Page Heading/Breadcrumbs -->
@@ -7,7 +9,7 @@
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/materials/">Home</a>
+        <a href="/materials/">Materials</a>
       </li>
       <li class="breadcrumb-item">
         <a href="/materials/{{reference.material_version.material.pk}}">{{reference.material_version.material.name}}</a>

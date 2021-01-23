@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% block materialmenu %}active{% endblock %}
+
 {% block maincontainer %}
   <div class="container">
 {% endblock %}
@@ -10,7 +12,7 @@
 <h1 class="mt-4 mb-3">{{matv.material.name}}&nbsp;{{matv.version}}</h1><hr>
 <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/materials/">Home</a>
+        <a href="/materials/">Materials</a>
       </li>
       <li class="breadcrumb-item">
         {% if matv.isITAR %}
@@ -27,7 +29,8 @@
   
   <div class="col-lg-2 col-md-2 col-sm-4">
     <div class="dropdown">
-        <button class="dropbtn btn btn-primary">Export</button>
+        <button class="dropbtn btn btn-primary">Export</button> 
+        
         <div id="myDropdown" class="dropdown-content">
         {% for i in download %}
         <form method="post">

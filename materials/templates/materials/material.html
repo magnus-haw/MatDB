@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% block materialmenu %}active{% endblock %}
+
 {% block header %}
   {% if form_error or form_success %}
     <script type="text/javascript">
@@ -17,7 +19,7 @@
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/materials/">Home</a>
+        <a href="/materials/">Materials</a>
       </li>
       <li class="breadcrumb-item active">{{material.name}}</li>
     </ol>
@@ -44,7 +46,11 @@
               <div class="row">
                 <div class="col-lg-6"><h4 class="card-title">Property versions</h4></div>
                 <div class="col-lg-6">
+                  {% if perms.materials.add_materialversion %}
                   <!-- Button trigger modal -->
+                  <div class="d-inline-block text-small">
+                    <span title="Feature Release Label: Beta" class="Label Label--outline-green Label--inline ml-1 px-1">Beta</span>
+                  </div>
                   <button type="button" class="btn btn-primary dropbtn" data-toggle="modal" data-target="#exampleModal">
                     Upload
                   </button>
@@ -81,17 +87,18 @@
                   <!--end modal -->
                 </div>
                 <!--end col -->
+                {% endif %}
               </div>            
               <div class="row">
                 <div class="col-md-12">
 
                   <ul>
                   {% if material.isITAR %}
-                    {% for matv in material.itarmaterialversion_set.all %}
+                    {% for matv in material.itarmaterialversion_set.all reversed%}
                     <li><a href="{% url 'itarversion-detail' matv.pk %}">{{matv.version}}</a></li>
                     {% endfor %}
                   {% else %}
-                    {% for matv in material.materialversion_set.all %}
+                    {% for matv in material.materialversion_set.all reversed%}
                     <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
                     {% endfor %}
                   {% endif %}

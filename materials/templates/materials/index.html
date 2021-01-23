@@ -1,6 +1,6 @@
 {% extends "base_generic.html" %}
 
-{% block homemenu %}active{% endblock %}
+{% block materialmenu %}active{% endblock %}
 
 {% block pageheader %}
 <header class="bg-primary py-5 mb-5">
@@ -42,8 +42,10 @@
             </div></div>
 	          <div class="row"><div class="col-md-12">
 	            <ul>
-              {% for matv in mat.materialversion_set.all %}
+              {% for matv in mat.materialversion_set.all reversed %}
+                {% if matv.published %}
 	              <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
+                {% endif %}
 	            {% endfor %}
               </ul>
             </div></div>
@@ -69,8 +71,10 @@
             </div></div>
 	          <div class="row"><div class="col-md-12">
 	            <ul>
-              {% for matv in mat.itarmaterialversion_set.all %}
+              {% for matv in mat.itarmaterialversion_set.all reversed %}
+                {% if matv.published %}
 	              <li><a href="{% url 'itarversion-detail' matv.pk %}">{{matv.version}}</a></li>
+                {% endif %}
 	            {% endfor %}
               </ul>
             </div></div>

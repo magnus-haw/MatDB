@@ -1,0 +1,53 @@
+{% extends "base_generic.html" %}
+
+{% block softwaremenu %}active{% endblock %}
+
+{% block content %}
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">{{tutorial.name}}</h1>
+
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/software/">Software</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'sw-detail' tutorial.software_version.software.pk %}">{{tutorial.software_version.software.name}}</a>
+      </li>
+      <li class="breadcrumb-item active">{{tutorial.name}}</li>
+    </ol>
+
+    <!-- Intro Content -->
+    <div class="row">
+      <div class="col-lg-8">
+        <h2>Description</h2>
+        <p>{{tutorial.description | safe }}</p>
+      </div>
+
+      <div class="col-lg-4 mb-4">
+        <div class="card h-100 text-left">
+          <div class="card-body">
+            <h4 class="card-title">File Attachment</h4>
+            <h6 class="card-subtitle mb-2 text-muted">Published: {{tutorial.published}}</h6>            
+                <hr>
+                {% if tutorial.file %}
+                <a href="{{tutorial.file.url}}">Download</a>
+                {% else %}
+                None
+                {% endif %}
+          </div>
+          
+        </div>
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.row --> 
+    <hr>
+  </div>
+  <!-- /.container -->
+{% endblock %}
+
+  <!-- Footer -->
+  {% block lastupdated %}{{tutorial.last_modified}}{% endblock %}
+
+

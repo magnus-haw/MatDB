@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+
+{% block softwaremenu %}active{% endblock %}
+
+{% block maincontainer %}
+  <div class="container">
+{% endblock %}
+
+{% block content %}
+
+<!-- Title -->
+<h1 class="mt-4 mb-3">{{swv.software.name}}&nbsp;{{swv.version}}</h1><hr>
+<ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/software/">Software</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'sw-detail' swv.software.pk %}">{{swv.software.name}}</a>
+      </li>
+      <li class="breadcrumb-item active">{{swv.software.name}}&nbsp;{{swv.version}}</li>
+</ol>
+<hr>
+
+<hr>
+    <div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+
+        
+        <hr>
+      </div>
+
+      <!-- Sidebar Widgets Column -->
+      <div class="col-lg-4 col-md-6">
+
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+{% endblock %}
+
+
+{% block lastupdated %}{{matv.last_modified}}{% endblock %}

@@ -27,6 +27,8 @@ class AbstractSoftware(BaseModel):
 class AbstractSoftwareVersion(BaseModel):
     software = models.ForeignKey("Software", on_delete=models.CASCADE)
     version = models.CharField(max_length=25)
+    published = models.DateField(null=True, blank=True)
+    link = models.URLField(null=True, blank=True)
     short_description = models.CharField(max_length=200,null=True,blank=True)
     lead_developer = models.ForeignKey(Person, on_delete=models.SET_NULL, null=True, blank=True, related_name='lead_developer')
     other_contact = models.ForeignKey(Person, on_delete=models.SET_NULL, null=True, blank=True, related_name='other_contact')
@@ -41,9 +43,10 @@ class AbstractSoftwareVersion(BaseModel):
 class AbstractTutorial(BaseModel):
     software_version = models.ForeignKey('SoftwareVersion', on_delete=models.CASCADE)
     name = models.CharField(max_length=500,unique=True)
-    link = models.URLField(blank=False, null=True)
+    link = models.URLField(blank=True, null=True)
     short_description = models.CharField(max_length=200,null=True,blank=True)
     description = RichTextUploadingField(blank=False,null=True)
+    file = models.FileField(null=True, blank=True)
     
     def __str__(self):
         return self.name
