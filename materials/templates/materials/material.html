@@ -1,13 +1,25 @@
 {% extends "base_generic.html" %}
 
-{% block content %}
+{% block materialmenu %}active{% endblock %}
 
+{% block header %}
+  {% if form_error or form_success %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#exampleModal").modal('show');
+        });
+    </script>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+    
     <!-- Page Heading/Breadcrumbs -->
     <h1 class="mt-4 mb-3">{{material.name}}</h1>
 
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/materials/">Home</a>
+        <a href="/materials/">Materials</a>
       </li>
       <li class="breadcrumb-item active">{{material.name}}</li>
     </ol>
@@ -30,25 +42,73 @@
       <div class="col-lg-4 mb-4">
         <div class="card h-100 text-left">
           <div class="card-body">
-            <h4 class="card-title">Property versions</h4>            
-
-            <div class="row">
-              <div class="col-md-12">
-                <ul>
-                {% if material.isITAR %}
-                  {% for matv in material.itarmaterialversion_set.all %}
-                  <li><a href="{% url 'itarversion-detail' matv.pk %}">{{matv.version}}</a></li>
-                  {% endfor %}
-                {% else %}
-                  {% for matv in material.materialversion_set.all %}
-                  <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
-                  {% endfor %}
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-6"><h4 class="card-title">Property versions</h4></div>
+                <div class="col-lg-6">
+                  {% if perms.materials.add_materialversion %}
+                  <!-- Button trigger modal -->
+                  <div class="d-inline-block text-small">
+                    <span title="Feature Release Label: Beta" class="Label Label--outline-green Label--inline ml-1 px-1">Beta</span>
+                  </div>
+                  <button type="button" class="btn btn-primary dropbtn" data-toggle="modal" data-target="#exampleModal">
+                    Upload
+                  </button>
+                  
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <form action="" method="post" enctype="multipart/form-data">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Upload Material Properties</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                          </div>
+                          {% if form_error %}
+                          <p>Failure!</p>
+                          {% endif %}
+                          {% if form_success %}
+                          <p>Success!</p>
+                          {% endif %}
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" value="Upload" style="margin-bottom: 5px;" />
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <!--end modal -->
+                </div>
+                <!--end col -->
                 {% endif %}
-                </ul>
+              </div>            
+              <div class="row">
+                <div class="col-md-12">
+
+                  <ul>
+                  {% if material.isITAR %}
+                    {% for matv in material.itarmaterialversion_set.all reversed%}
+                    <li><a href="{% url 'itarversion-detail' matv.pk %}">{{matv.version}}</a></li>
+                    {% endfor %}
+                  {% else %}
+                    {% for matv in material.materialversion_set.all reversed%}
+                    <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
+                    {% endfor %}
+                  {% endif %}
+                  </ul>
+                </div>
               </div>
             </div>
-
+            <!-- end container -->
           </div>
+          <!-- end card-body -->
           
         </div>
       </div>

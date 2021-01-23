@@ -1,0 +1,88 @@
+{% extends "base_generic.html" %}
+
+{% block softwaremenu %}active{% endblock %}
+
+{% block content %}
+    
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">{{software.name}}</h1>
+
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/software/">Software</a>
+      </li>
+      <li class="breadcrumb-item active">{{software.name}}</li>
+    </ol>
+
+    <!-- Intro Content -->
+    <div class="row">
+      <div class="col-lg-6">
+        {% if software.image %}
+        <img class="img-fluid rounded mb-4" src="{{software.image.url}}" alt="">
+        {% endif %}
+      </div>
+      <div class="col-lg-6">
+        <h2>Overview</h2>
+        <p>{{software.description | safe}}</p>
+      </div>
+    </div>
+    <!-- /.row -->
+<hr>
+    <!-- Software versions -->
+    <div class="row">
+
+      <div class="col-lg-4 mb-4">
+        <div class="card h-100 text-left">
+          <div class="card-body">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12"><h4 class="card-title">Software versions</h4></div>
+              </div>            
+              <div class="row">
+                <div class="col-md-12">
+
+                  <ul>
+                    {% for swv in software.softwareversion_set.all reversed %}
+                    <li><a href="{% url 'sw-version-detail' swv.pk %}">{{swv.version}}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- end container -->
+          </div>
+          <!-- end card-body -->
+          
+        </div>
+      </div>
+      <!-- /.card -->
+
+      <div class="col-lg-8 mb-4">
+        <div class="card h-100 text-left">
+          <div class="card-body">
+            <h4 class="card-title">Tutorials</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <ul>
+                  {% for tutorial in tutorials %}
+                  <li><a href="{% url 'tutorial-detail' tutorial.pk %}">{{tutorial.name}} [v{{tutorial.software_version.version}}]</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <!-- /.card -->
+      
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+{% endblock %}
+
+<!-- Footer -->
+  {% block lastupdated %}{{material.last_modified}}{% endblock %}

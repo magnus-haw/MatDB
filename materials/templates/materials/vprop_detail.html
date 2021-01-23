@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% block materialmenu %}active{% endblock %}
+
 {% block header %}
   <!-- Bokeh plotting JS and CSS -->
   <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.3.min.js" crossorigin="anonymous"></script>
@@ -15,7 +17,7 @@
 <h1 class="mt-4 mb-3">{{vprop.name}}&nbsp;&nbsp;{{vprop.material_version.material.name}}&nbsp;{{vprop.material_version.version}}</h1><hr>
 <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/materials/">Home</a>
+        <a href="/materials/">Materials</a>
       </li>
       
         {% if vprop.isITAR %}
