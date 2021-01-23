@@ -8,17 +8,57 @@ application = get_wsgi_application()
 
 from units.models import BaseUnit, ComboUnit, BaseUnitPower
 
+inputs_BaseUnit=[
+	{"name":"Ampere","symbol":"A","coeff":1.0,"temp_offset":0.0,"dims":[0, 0, 0, 1, 0, 0, 0]},
+	{"name":"British thermal unit","symbol":"BTU","coeff":1055.0,"temp_offset":0.0,"dims":[2, 1, -2, 0, 0, 0, 0]},
+	{"name":"Candela","symbol":"cd","coeff":1.0,"temp_offset":0.0,"dims":[0, 0, 0, 0, 0, 0, 1]},
+	{"name":"Celcius","symbol":"degC","coeff":1.0,"temp_offset":273.15,"dims":[0, 0, 0, 0, 1, 0, 0]},
+	{"name":"Fahrenheit","symbol":"degF","coeff":0.55555555555,"temp_offset":255.37,"dims":[0, 0, 0, 0, 1, 0, 0]},
+	{"name":"Foot","symbol":"ft","coeff":0.3048,"temp_offset":0.0,"dims":[1, 0, 0, 0, 0, 0, 0]},
+	{"name":"Inch","symbol":"in","coeff":0.0254,"temp_offset":0.0,"dims":[1, 0, 0, 0, 0, 0, 0]},
+	{"name":"Joule","symbol":"J","coeff":1.0,"temp_offset":0.0,"dims":[2, 1, -2, 0, 0, 0, 0]},
+	{"name":"Kelvin","symbol":"K","coeff":1.0,"temp_offset":0.0,"dims":[0, 0, 0, 0, 1, 0, 0]},
+	{"name":"Kilogram","symbol":"kg","coeff":1.0,"temp_offset":0.0,"dims":[0, 1, 0, 0, 0, 0, 0]},
+	{"name":"Meter","symbol":"m","coeff":1.0,"temp_offset":0.0,"dims":[1, 0, 0, 0, 0, 0, 0]},
+	{"name":"Mole","symbol":"mole","coeff":1.0,"temp_offset":0.0,"dims":[0, 0, 0, 0, 0, 1, 0]},
+	{"name":"Newton","symbol":"N","coeff":1.0,"temp_offset":0.0,"dims":[1, 1, -2, 0, 0, 0, 0]},
+	{"name":"None","symbol":"-","coeff":1.0,"temp_offset":0.0,"dims":[0, 0, 0, 0, 0, 0, 0]},
+	{"name":"Pascal","symbol":"Pa","coeff":1.0,"temp_offset":0.0,"dims":[-1, 1, -2, 0, 0, 0, 0]},
+	{"name":"Pound-force","symbol":"lbf","coeff":4.448222,"temp_offset":0.0,"dims":[1, 1, -2, 0, 0, 0, 0]},
+	{"name":"Pound-mass","symbol":"lb","coeff":0.45359237,"temp_offset":0.0,"dims":[0, 1, 0, 0, 0, 0, 0]},
+	{"name":"Second","symbol":"s","coeff":1.0,"temp_offset":0.0,"dims":[0, 0, 1, 0, 0, 0, 0]},
+    {"name":"Rankine","symbol":"R","coeff":0.555556,"temp_offset":0.0,"dims":[0, 0, 0, 0, 1, 0, 0]}
+]
+
+def dims_to_BaseUnit(dims):
+    units_model = ["length_dim", "mass_dim", "time_dim",
+                    "current_dim", "temp_dim", "mole_dim", "luminous_dim"]
+    dict = {}
+    for i, dims_i in enumerate(dims):
+        dict[units_model[i]]=dims_i
+    return dict
+
+for i in inputs_BaseUnit:
+    i.update(dims_to_BaseUnit(i["dims"]))
+    del i["dims"]
+
 names_ComboUnit = ["1/s","J/(kg K)","J/kg","K","None","W/(m K)","W/m2",
-                   "kg.m2/(s2.mole)","kg/m3","kg/s","m2/s2","m2"]
+                   "kg.m2/(s2.mole)","kg/m3","kg/s","m2/s2","m2",
+                   "BTU/(lb.R)","BTU/(ft s R)","BTU/lb","lb/ft3"]
 alternate_names_ComboUnit = ["s-1\r\ns^-1","J/kg/K\r\nJ/Kkg\r\nJ/kgK\r\nJ/kg-K\r\nJ/K-kg",
                              "Jkg^-1\r\nJoules per kilogram\r\nJ kg^-1","Kelvin",
                              "No","W/m/K","W/m^2\r\nWatts per m^2\r\nWm^-2",
                              "kgm2/(s2mole)\r\nkg.m^2/(s^2.mole)\r\nkg.m2.s-2.mole-1",
                              "kg/m^3\r\nkg.m^-3\r\nkg m^-3\r\nkilogram per m^3","kg.s-1\r\nkg.s^-1",
-                             "m2s-2\r\nm^2s^-2\r\nm^2/s^2","square meters\r\nm^2"]
+                             "m2s-2\r\nm^2s^-2\r\nm^2/s^2","square meters\r\nm^2",
+                             "BTU/(lb R)\r\nBTU/lb/R\r\nBTU lb-1 R-1\r\nBTU lb^-1 R^-1\r\nBTU.lb^-1.R^-1",
+                             "BTU/(ft.s.R)\r\nBTU ft-1 s-1 R-1\r\nBTU ft^-1 s^-1 R^-1",
+                             "BTU lb-1\r\nBTU lb^-1\r\nBTU.lb^-1",
+                             "lb.ft-3\r\nlb fr-3\r\nlb.ft^-3\r\nlb ft^-3"]
+
 for i,names_i in enumerate(names_ComboUnit):
     alternate_names_ComboUnit[i] += "\r\n" + names_i
-dim_symbols = ["kg","m","s","K","mole","A","cd","J"]
+dim_symbols=[]
 replace_symbols = {"W":"J.s^-1"}
 
 def units_string_to_power(units_string):
@@ -65,10 +105,22 @@ def units_string_to_power(units_string):
     return values
 
 if "delete" in sys.argv:
+    print ("Delete all the BaseUnit, BaseUnitPower, and ComboUnit.")
+    BaseUnit.objects.all().delete()
     BaseUnitPower.objects.all().delete()
     ComboUnit.objects.all().delete()
 
 if "update" in sys.argv:
+    # Create/update the BaseUnit
+    for i in inputs_BaseUnit:
+        base_unit,flag = BaseUnit.objects.get_or_create(**i)
+        base_unit.save()
+
+    # Create/update the dim symbols
+    for obj in BaseUnit.objects.all():
+        dim_symbols.append(obj.symbol)
+
+    # Create/update the BaseUnitPower and ComboUnit
     for i,names_ComboUnit_i in enumerate(names_ComboUnit):
         name = names_ComboUnit_i
         alternate_names = alternate_names_ComboUnit[i]
@@ -82,15 +134,18 @@ if "update" in sys.argv:
     print("Updated")
     print("ComboUnit = " + str(ComboUnit.objects.count()))
     print("BaseUnitPower = " + str(BaseUnitPower.objects.count()))
+    print("BaseUnit = " + str(BaseUnit.objects.count()))
 
 if "print" in sys.argv:
-
     if "BaseUnit" in sys.argv or "all" in sys.argv:
         print("==========================")
         print("BaseUnit = " + str(BaseUnit.objects.count()))
         for obj in BaseUnit.objects.all():
             print("\t"+str(obj.id))
             print("\t"+str(obj.name))
+            print("\t"+str(obj.symbol))
+            print("\t"+str(obj.coeff))
+            print("\t"+str(obj.temp_offset))
             print("\t" + str(obj.dims()))
             print("\t------")
         print("==========================")
