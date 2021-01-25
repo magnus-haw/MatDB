@@ -156,7 +156,7 @@ if __name__=="__main__":
     from datetime import date
 
     folder = "materials/FIAT_database/"
-    fname1 = folder + "TACOT_v3.0.1.csv"
+    fname1 = folder + "TACOT_v3.0.2.csv"
 
     # Load TACOT file
     Pform1 = parse_FIAT_material_csv(fname1)
@@ -184,6 +184,3 @@ if __name__=="__main__":
         print(ITARMatrixProperty.objects.count())
         print("ITARVariableProperty.objects.count()=", end="")
         print(ITARVariableProperty.objects.count())
-
-for i in ConstProperty.objects.all():
-    print (i)

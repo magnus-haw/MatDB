@@ -1,5 +1,5 @@
 Name,Version,Date,Format,,,,,,,,,,,,,,,,
-TACOT,3.0.1,1/21/21,FIAT,,,,,,,,,,,,,,,,
+TACOT,3.0.2,1/21/21,FIAT,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,
 ,,Virgin properties,,,,,Char properties,,,,,,Pyrolysis enthalpy,,,,Constant properties,,
 Pressure(atm),Temperature(R),cp_virgin(BTU/lb/R),k_tt_virgin(BTU/(ft.s.R),emissivity_virgin(-),absorptivity_virgin(-),k_ip_virgin(BTU/(ft.s.R),cp_char(BTU/lb/R),k_tt_char(BTU/(ft.s.R),emissivity_char(-),absorptivity_char(-),k_ip_char(BTU/(ft.s.R),,Pressure(atm),Temperature(R),h_g(BTU/lb),,Type,4,Material type: pyrolysis and ablation
