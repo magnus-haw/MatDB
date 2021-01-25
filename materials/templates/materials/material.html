@@ -95,11 +95,15 @@
                   <ul>
                   {% if material.isITAR %}
                     {% for matv in material.itarmaterialversion_set.all reversed%}
+                    {% if matv.published %}
                     <li><a href="{% url 'itarversion-detail' matv.pk %}">{{matv.version}}</a></li>
+                    {% endif %}
                     {% endfor %}
                   {% else %}
                     {% for matv in material.materialversion_set.all reversed%}
+                    {% if matv.published %}
                     <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
+                    {% endif %}
                     {% endfor %}
                   {% endif %}
                   </ul>
