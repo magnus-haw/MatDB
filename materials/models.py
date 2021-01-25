@@ -195,18 +195,3 @@ class AbstractReference(BaseModel):
 
 class Reference(AbstractReference):
     pass
-
-class AbstractDownloadModel(BaseModel):
-    material_version = models.ForeignKey(MaterialVersion, on_delete=models.CASCADE)
-    code_name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.code_name + "_" + self.material_version.material.name + "_" + self.material_version.version
-
-    class Meta:
-        abstract = True
-
-class DownloadModel(AbstractDownloadModel):
-
-    class Meta:
-        verbose_name_plural = "Download model"

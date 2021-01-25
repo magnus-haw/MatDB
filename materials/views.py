@@ -8,7 +8,6 @@ from django.db import transaction
 
 from .models import Material, MaterialVersion, VariableProperty 
 from .models import ConstProperty, MatrixProperty, Reference
-from .export.codes import *
 from .forms import UploadMaterialVersion
 
 from itarmaterials.models import ITARMaterial
