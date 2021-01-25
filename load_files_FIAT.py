@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import re
 import sys
+from datetime import date
 from io import StringIO
 
 ### Loading files into database.
@@ -46,12 +47,13 @@ def parse_FIAT_material_csv(fpath_or_buffer):
 
 
 def upload_FIAT_fmt(matName, Pform, ITAR=False):
+    dt = date.fromisoformat('2020-01-01')
     if ITAR:
         mat = ITARMaterial.objects.get(name=matName)
-        matv,flag = ITARMaterialVersion.objects.get_or_create(material=mat, version=Pform['version'])
+        matv,flag = ITARMaterialVersion.objects.get_or_create(material=mat, version=Pform['version'], published=dt)
     else:
         mat = Material.objects.get(name=matName)
-        matv,flag = MaterialVersion.objects.get_or_create(material=mat, version=Pform['version'])
+        matv,flag = MaterialVersion.objects.get_or_create(material=mat, version=Pform['version'], published=dt)
 
     units = ComboUnit.objects.all()
     none_unit = ComboUnit.objects.get(name='None')
