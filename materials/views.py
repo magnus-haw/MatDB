@@ -45,11 +45,10 @@ def material_view(request,matpk):
         # create a form instance and populate it with data from the request:
         form = UploadMaterialVersion(request.POST, request.FILES)
         # check whether it's valid:
-        print(request.FILES)
         if form.is_valid():
             # process the data in form.cleaned_data as required
             csvfile = request.FILES['file']
-            pform = PATO_formatter()
+            pform = eval(form.cleaned_data["upload_format"].name + "_formatter()")
             pform.upload_file(csvfile)
             # redirect to a new URL:
             form_success = True
