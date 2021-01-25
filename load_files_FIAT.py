@@ -165,15 +165,16 @@ if __name__=="__main__":
 
     if "delete" in sys.argv:
         mat = Material.objects.get(name='TACOT')
-        matv = MaterialVersion.objects.get(material=mat, version=Pform1['version'])
-        matv.variableproperty_set.all().delete()
-        matv.matrixproperty_set.all().delete()
-        matv.constproperty_set.all().delete()
+        matv = MaterialVersion.objects.filter(material=mat, version=Pform1['version'])
+        matv.all().delete()
 
     if "update" in sys.argv:
         upload_FIAT_fmt('TACOT', Pform1)
 
     if "print" in sys.argv:
+        print("MaterialVersion =")
+        for i in MaterialVersion.objects.all():
+            print ("\t"+i.material.name + "_" + i.version)
         print("ConstProperty.objects.count()=",end="")
         print(ConstProperty.objects.count())
         print("MatrixProperty.objects.count()=",end="")
