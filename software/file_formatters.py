@@ -2,13 +2,12 @@ from django.conf import settings
 import os
 import sys
 import zipfile
-
 import re
 import numpy as np
 import pandas as pd
+from datetime import date
 
-
-from .models import Software, SoftwareVersion
+from .models import ExportFormat, Software, SoftwareVersion
 from itarmaterials.models import ITARMaterial, ITARMaterialVersion, ITARVariableProperty, ITARConstProperty, ITARMatrixProperty
 from materials.models import MaterialVersion, Material, VariableProperty, ConstProperty, MatrixProperty
 from units.models import ComboUnit
@@ -69,6 +68,22 @@ class Formatter(object):
         f.write(msg+string)
         f.close()
         return file_name
+
+    # Update the ExportFormat for a new material version
+    def update_export_format(self, matv):
+        latest_software = {}
+        for softv in SoftwareVersion.objects.all():
+            if softv.software.name not in latest_software.keys():
+                latest_software[softv.software.name] = softv.version
+            else:
+                if latest_software[softv.software.name] < softv.version:
+                    latest_software[softv.software.name] = softv.version
+        for i in latest_software.keys():
+            soft = Software.objects.get(name=i)
+            softv = SoftwareVersion.objects.get(version=latest_software[i], software=soft)
+            description = "<p>" + softv.software.name + " " + softv.version + ": " + matv.material.name + " " + matv.version + "</p>"
+            exp, flag = ExportFormat.objects.get_or_create(material_version=matv, software_version=softv, description=description)
+            exp.save()
 
     # Create a dummy file with the code name, the material name and the material version.
     def export_file(self, matv, softv):
@@ -247,13 +262,14 @@ class PATO_formatter(Formatter):
     def upload_file(self, fpath_or_buffer, ITAR=False):
         Pform = self.parse_file(fpath_or_buffer)
         matName = Pform['material']
-        
+        today = date.today().strftime("%Y-%m-%d")
+
         if ITAR:
             mat = ITARMaterial.objects.get(name=matName)
-            matv,flag = ITARMaterialVersion.objects.get_or_create(material=mat, version=Pform['version'])
+            matv,flag = ITARMaterialVersion.objects.get_or_create(material=mat, version=Pform['version'], published=today)
         else:
             mat = Material.objects.get(name=matName)
-            matv,flag = MaterialVersion.objects.get_or_create(material=mat, version=Pform['version'])
+            matv,flag = MaterialVersion.objects.get_or_create(material=mat, version=Pform['version'], published=today)
         
         units = ComboUnit.objects.all()
         none_unit = ComboUnit.objects.get(name='None')
@@ -503,13 +519,14 @@ class FIAT_formatter(Formatter):
     def upload_file(self, fpath_or_buffer, ITAR=False):
         Pform = self.parse_file(fpath_or_buffer)
         matName = Pform['material']
+        today = date.today().strftime("%Y-%m-%d")
 
         if ITAR:
             mat = ITARMaterial.objects.get(name=matName)
-            matv,flag = ITARMaterialVersion.objects.get_or_create(material=mat, version=Pform['version'])
+            matv,flag = ITARMaterialVersion.objects.get_or_create(material=mat, version=Pform['version'], published=today)
         else:
             mat = Material.objects.get(name=matName)
-            matv,flag = MaterialVersion.objects.get_or_create(material=mat, version=Pform['version'])
+            matv,flag = MaterialVersion.objects.get_or_create(material=mat, version=Pform['version'], published=today)
 
         units = ComboUnit.objects.all()
         none_unit = ComboUnit.objects.get(name='None')

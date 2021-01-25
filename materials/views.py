@@ -50,6 +50,8 @@ def material_view(request,matpk):
             csvfile = request.FILES['file']
             pform = eval(form.cleaned_data["upload_format"].name + "_formatter()")
             pform.upload_file(csvfile)
+            matv = MaterialVersion.objects.get(material=form.cleaned_data["material"], version=form.cleaned_data["version"])
+            pform.update_export_format(matv)
             # redirect to a new URL:
             form_success = True
         else:
