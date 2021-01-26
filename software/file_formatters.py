@@ -158,7 +158,8 @@ class PATO_formatter(Formatter):
         f_char.write(header_char)
         header_virgin = header_char.replace("char","virgin")
         f_virgin.write(header_virgin)
-        varprops = self.matv.variableproperty_set.all().order_by('state')
+        software = Software.objects.get(name="PATO")
+        varprops = self.matv.variableproperty_set.all().order_by('state').filter(software=software)
         data_char = []
         data_p_char = []
         data_T_char = []
@@ -205,11 +206,28 @@ class PATO_formatter(Formatter):
                     + "// e.g. W: kg m^2 s^{-3}        [1 2 -3 0 0 0 0]\n\n" \
                     + "/****           Universal constants                                             ****/\n" \
                     + "R               R               [1 2 -2 -1 -1 0 0]      8.314471469;\n" \
-                    + "sigmaPlanck     sigmaPlanck     [1 0 -3 -1 0 0 0]       5.6697e-8;\n\n"
+                    + "sigmaPlanck     sigmaPlanck     [1 0 -3 -1 0 0 0]       5.6697e-8;\n\n" \
+                    + "/***            Anisotropic conductivity parameters: main directions and linear factors         ***/\n" \
+                    + "//              kxyz = tP & kijk' & P\n" \
+                    + "// 1- Express the main directions (ijk) of the diagonal conductivity matrix in the basis of the mesh (xyz) \n" \
+                    + "//                                                      (i j k)                 ex. rotation a (in radians) around axis z\n" \
+                    + "tP              tP              [0 0 0 0 0 0 0]         (1 0 0   // x           (cosa -sina 0\n" \
+                    + "                                                         0 1 0   // y            sina  cosa 0\n" \
+                    + "                                                         0 0 1); // z            0       0  1)\n" \
+                    + "// 2 - Linear factors\n" \
+                    + "kiCoef          kiCoef          [0 0 0 0 0 0 0]         1;       // to multiply column ki of the input files 'char' and 'virgin' by a linear factor: ki' = kiCoef*ki\n" \
+                    + "kjCoef          kjCoef          [0 0 0 0 0 0 0]         1;       // idem for kj\n" \
+                    + "kkCoef          kkCoef          [0 0 0 0 0 0 0]         1;       // idem for kk\n\n"
+
         f_const.write(header_const)
-        constprops = self.matv.constproperty_set.all()
+        constprops = self.matv.constproperty_set.all().filter(software=software)
+        order=[1,0,2,5,3,4,6] # OpenFOAM units order [Mass Length Time Temperature Quantity	Current Luminous]
+        scalar_list=["nSolidPhases","Zx[","nPyroReac["]
         for i in constprops:
-            dims = i.unit.dims()
+            dims_tmp = i.unit.dims()
+            dims=dims_tmp.copy()
+            for j, order_j in enumerate(order):
+                dims[order_j] = dims_tmp[j]
             units_to_OF = "["
             for j, dims_j in enumerate(dims):
                 end = " "
@@ -218,8 +236,31 @@ class PATO_formatter(Formatter):
                 units_to_OF = units_to_OF + str(int(dims_j)) + end
             name = i.name
             name = name.split(" ")[0] # remove the units in the name
-            f_const.write("// " + name + "\n")
-            f_const.write(name + " " + name  + " " + units_to_OF + " " + str(i.value) + "\n\n")
+            f_const.write("// " + name + ": " + i.description + "\n")
+            scalar = False
+            for j in scalar_list:
+                if (name.find(j) >= 0):
+                    scalar = True
+            if scalar:
+                f_const.write(name  + " " + str(i.value) + ";\n\n")
+            else:
+                f_const.write(name + " " + name + " " + units_to_OF + " " + str(i.value) + ";\n\n")
+        matrixprops = self.matv.matrixproperty_set.all().filter(software=software)
+        for i in matrixprops:
+            dims_tmp = i.unit.dims()
+            dims = dims_tmp.copy()
+            for j, order_j in enumerate(order):
+                dims[order_j] = dims_tmp[j]
+            units_to_OF = "["
+            for j, dims_j in enumerate(dims):
+                end = " "
+                if j == len(dims) - 1:
+                    end = "]"
+                units_to_OF = units_to_OF + str(int(dims_j)) + end
+            name = i.name
+            name = name.split(" ")[0]  # remove the units in the name
+            f_const.write("// " + name + ": " + i.description + "\n")
+            f_const.write(name + " " + name + " " + units_to_OF + " " + str(i.value) + ";\n\n")
         f_const.close()
         zip_file = zipfile.ZipFile(folder_name+".zip", 'w', zipfile.ZIP_DEFLATED)
         zipdir(folder_name, zip_file)
@@ -282,9 +323,9 @@ class PATO_formatter(Formatter):
         for key in Pform['vparams'].keys():
             if key not in ['Pressure(Pa)', 'Temperature(K)']:
                 if ITAR:
-                    vprop,fl = ITARVariableProperty.objects.get_or_create(material_version=matv, name=key)
+                    vprop,fl = ITARVariableProperty.objects.get_or_create(material_version=matv, name=key, software=soft)
                 else:
-                    vprop,fl = VariableProperty.objects.get_or_create(material_version=matv, name=key)
+                    vprop,fl = VariableProperty.objects.get_or_create(material_version=matv, name=key, software=soft)
                 vprop.p = p
                 vprop.T = T
                 vprop.values = Pform['vparams'][key]
@@ -303,7 +344,6 @@ class PATO_formatter(Formatter):
                     for unit in units:
                         if ustrings[0][1:-1] in unit.alternate_names:
                             vprop.unit = unit
-                vprop.software = soft
                 vprop.save()
         
         names, vals, notes = Pform['const_names'],Pform['const_vals'],Pform['const_notes']
@@ -325,24 +365,22 @@ class PATO_formatter(Formatter):
 
             if vals[i][0] == '(':
                 if ITAR:
-                    mx,flag = ITARMatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state)
+                    mx,flag = ITARMatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state, software=soft)
                 else:
-                    mx,flag = MatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state)
+                    mx,flag = MatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state, software=soft)
                 mx.unit = myunit
                 mx.value=vals[i]
                 mx.description = "matrix elements"
-                mx.software = soft
                 mx.save()
 
             else:
                 if ITAR:
-                    const,flag = ITARConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i])
+                    const,flag = ITARConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i], software=soft)
                 else:
-                    const,flag = ConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i])
+                    const,flag = ConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i], software=soft)
                 const.description=notes[i]
                 const.value=float(vals[i])
                 const.unit = myunit
-                const.software = soft
                 const.save()
 
 class FIAT_formatter(Formatter):
@@ -355,8 +393,7 @@ class FIAT_formatter(Formatter):
         self.mat_version = matv.version
         self.code_name = softv.software.name
         self.code_version = softv.version
-        # Get current folder
-        mycwd = os.getcwd()
+
         # Folder name
         folder_base = settings.STATIC_ROOT + "/tmp"
         file_name = "matdatabase_" + self.code_name + "_" + self.mat_name + "_" + self.mat_version + ".txt"
@@ -377,10 +414,13 @@ class FIAT_formatter(Formatter):
                 + "   {0:<3}{1:<19}{2:<6}{3:<5}".format(1,self.mat_name,self.mat_version,int(self.matv.constproperty_set.get(name="Type").value))+ self.matv.material.description + "\n\n" \
                 + "{0:<19}{1:<6}{2:<5}".format(self.mat_name,self.mat_version,0)+ self.matv.material.description + "\n"
         f.write(header)
+        software = Software.objects.get(name="FIAT")
         # Constant properties
         names = []
-        for i in self.matv.constproperty_set.all():
+        constProps = self.matv.constproperty_set.all().filter(software=software)
+        for i in constProps:
             names.append(i.name)
+
         text = ""
         data=[[["{:>8}"],"DH1"],[["{:>5}"],"DH2"],[["{:>5}"],"DH3"],[["{:.1f}","{:>7}"],"TDH"],[[],"\n"],
               [["{:>6}"],"GAMMA"],[["{:>5}"],"PHI"],[[],"\n"],
@@ -397,13 +437,19 @@ class FIAT_formatter(Formatter):
             else:
                 index = index_containing_substring(names,i[1])
                 if index >= 0:
-                    text += format_list(i[0],self.matv.constproperty_set.get(name=names[index]).value)
+                    text += format_list(i[0], constProps.get(name=names[index]).value)
                 else:
-                    text += str(i[0].format("{" + i[1] + "}"))
+                    names = []
+                    for i in self.matv.constproperty_set.all():
+                        names.append(i.name)
+                    if index_containing_substring(names,i[1]) >= 0:
+                        return self.error_file("\""+i[1]+"\" found in ConstProperty but software FIAT not found.")
+                    return self.error_file("\""+i[1]+"\" not found in ConstProperty")
+
         # Variable properties
-        varprops=self.matv.variableproperty_set
+        varprops=self.matv.variableproperty_set.all().filter(software=software)
         names=[]
-        for i in varprops.all():
+        for i in varprops:
             names.append(i.name)
         var_names = ["cp","k_tt","emissivity","absorptivity","k_ip"]
         format_data = [["{:.1f}","{:>7}"],["{:.3f}","{:>7}"],["{:.3E}","{:>11}"],["{:.1f}", "{:>5}"],
@@ -480,7 +526,7 @@ class FIAT_formatter(Formatter):
                 text += "\n"
         f.write(text)
         f.close()
-        os.chdir(mycwd)
+        os.chdir(self.cwd)
         return full_file_name
 
     def parse_file(self, fpath_or_buffer):
@@ -542,9 +588,9 @@ class FIAT_formatter(Formatter):
         for key in Pform['vparams'].keys():
             if key not in ['Pressure(atm)', 'Temperature(R)']:
                 if ITAR:
-                    vprop,fl = ITARVariableProperty.objects.get_or_create(material_version=matv, name=key)
+                    vprop,fl = ITARVariableProperty.objects.get_or_create(material_version=matv, name=key, software=soft)
                 else:
-                    vprop,fl = VariableProperty.objects.get_or_create(material_version=matv, name=key)
+                    vprop,fl = VariableProperty.objects.get_or_create(material_version=matv, name=key, software=soft)
                 vprop.p = p
                 vprop.T = T
                 vprop.values = Pform['vparams'][key]
@@ -563,7 +609,6 @@ class FIAT_formatter(Formatter):
                     for unit in units:
                         if ustrings[0][1:-1] in unit.alternate_names:
                             vprop.unit = unit
-                vprop.software = soft
                 vprop.save()
 
         p = Pform['vparams_h']['Pressure(atm)']
@@ -571,9 +616,9 @@ class FIAT_formatter(Formatter):
         for key in Pform['vparams_h'].keys():
             if key not in ['Pressure(atm)', 'Temperature(R)']:
                 if ITAR:
-                    vprop, fl = ITARVariableProperty.objects.get_or_create(material_version=matv, name=key)
+                    vprop, fl = ITARVariableProperty.objects.get_or_create(material_version=matv, name=key, software=soft)
                 else:
-                    vprop, fl = VariableProperty.objects.get_or_create(material_version=matv, name=key)
+                    vprop, fl = VariableProperty.objects.get_or_create(material_version=matv, name=key, software=soft)
                 vprop.p = p
                 vprop.T = T
                 vprop.values = Pform['vparams_h'][key]
@@ -586,7 +631,6 @@ class FIAT_formatter(Formatter):
                     for unit in units:
                         if ustrings[0][1:-1] in unit.alternate_names:
                             vprop.unit = unit
-                vprop.software = soft
                 vprop.save()
         names, vals, notes = Pform['const_names'],Pform['const_vals'],Pform['const_notes']
         for i in range(0,len(names)):
@@ -607,24 +651,22 @@ class FIAT_formatter(Formatter):
                 myunit = none_unit
             if vals[i][0] == '(':
                 if ITAR:
-                    mx,flag = ITARMatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state)
+                    mx,flag = ITARMatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state, software=soft)
                 else:
-                    mx,flag = MatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state)
+                    mx,flag = MatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state, software=soft)
                 mx.unit = myunit
                 mx.value=vals[i]
                 mx.description = "matrix elements"
-                mx.software = soft
                 mx.save()
 
             else:
                 if ITAR:
-                    const,flag = ITARConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i])
+                    const,flag = ITARConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i], software=soft)
                 else:
-                    const,flag = ConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i])
+                    const,flag = ConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i], software=soft)
                 const.description=notes[i]
                 const.value=float(vals[i])
                 const.unit = myunit
-                const.software = soft
                 const.save()
                 
 class ICARUS_formatter(Formatter):

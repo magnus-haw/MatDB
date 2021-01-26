@@ -1,0 +1,7 @@
+FIAT Material Database File, last modified on 2021-01-25 at NASA Ames
+Material specification: sequence number, character name, version number, type
+Type: 0=subsurface, 1=reusable, 2=pyro only, 3=abl only, 4=pyro+abl
+1  number of materials to follow, format i4,2x,a16,2x,a5,2x,i1
+   1  TACOT              3.0.2 4    Theoretical Ablative Composite for Open Testing (TACOT)
+
+TACOT              3.0.2 0    Theoretical Ablative Composite for Open Testing (TACOT)
