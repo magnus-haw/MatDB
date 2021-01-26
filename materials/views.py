@@ -12,7 +12,7 @@ from .forms import UploadMaterialVersion
 
 from itarmaterials.models import ITARMaterial
 from software.file_formatters import PATO_formatter, FIAT_formatter, ICARUS_formatter
-from software.models import ExportFormat, SoftwareVersion
+from software.models import ExportFormat, SoftwareVersion, Software
 
 import numpy as np
 from bokeh.plotting import figure
@@ -94,17 +94,33 @@ def material_version_view(request,matv_pk):
                 return response
         # raise Http404
         return HttpResponseRedirect(request.path_info)
-    
-    constprops = matv.constproperty_set.all()
-    varprops = matv.variableproperty_set.all().order_by('state')
-    matrixprops = matv.matrixproperty_set.all().order_by('state')
+
+    constprops = matv.constproperty_set.all().order_by('software')
+    varprops = matv.variableproperty_set.all().order_by('software','state')
+    matrixprops = matv.matrixproperty_set.all().order_by('software','state')
     download = ExportFormat.objects.filter(material_version=matv)
+    software = Software.objects.all()
+
+    if request.method == 'POST' and 'views' in request.POST:
+        soft_name = request.POST['views']
+        print(soft_name)
+        if soft_name == "All":
+            constprops = matv.constproperty_set.all().order_by('software')
+            varprops = matv.variableproperty_set.all().order_by('software', 'state')
+            matrixprops = matv.matrixproperty_set.all().order_by('software', 'state')
+        else:
+            software_i = Software.objects.get(name=soft_name)
+            constprops = matv.constproperty_set.all().filter(software=software_i)
+            varprops = matv.variableproperty_set.all().order_by('state').filter(software=software_i)
+            matrixprops = matv.matrixproperty_set.all().order_by('state').filter(software=software_i)
+
     context = {
             'matv':matv,
             'constprops':constprops,
             'varprops':varprops,
             'matrixprops':matrixprops,
             'download':download,
+            'software':software,
             }
     return render(request, 'materials/version.html', context = context)
 

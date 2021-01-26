@@ -25,31 +25,45 @@
 </ol>
 <hr>
 
-<div class="row"> <!-- download/upload buttons -->
-  
-  <div class="col-lg-2 col-md-2 col-sm-4">
-    <div class="dropdown">
-        <button class="dropbtn btn btn-primary">Export</button> 
-        
-        <div id="myDropdown" class="dropdown-content">
-        {% for i in download %}
-        <form method="post">
-        {% csrf_token %}
-        <button class="downloadbutton" type="submit" name="export_codes" value="{{i.software_version.pk}}">{{i.software_version.software.name}}</button>
-        </form>
-        {% endfor %}
+<div class="row"> <!-- download/view buttons -->
+    <div class="card-body" id="vinfo">
+        <div class="row no-gutters">
+            <div class="col-lg-2 col-md-2 col-sm-4">
+                <div class="dropdown">
+                    <button class="dropbtn btn btn-primary">Export</button>
+                    <div id="myDropdown" class="dropdown-content">
+                        {% for i in download %}
+                        <form method="post">
+                        {% csrf_token %}
+                        <button class="downloadbutton" type="submit" name="export_codes" value="{{i.software_version.pk}}">{{i.software_version.software.name}}</button>
+                        </form>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4">
+                <div class="dropdown">
+                    <button class="dropbtn btn btn-primary">Views</button>
+                    <div id="myDropdown_views" class="dropdown-content">
+                        {% for i in software %}
+                        <form method="post">
+                        {% csrf_token %}
+                        <button class="downloadbutton" type="submit" name="views" value="{{i.name}}">{{i.name}}</button>
+                        {% endfor %}
+                        <button class="downloadbutton" type="submit" name="views" value="All">All</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-  </div>
-  <!--end col -->
 </div>
 <!-- end row -->
-
 <hr>
 <div class="row">
 
       <!-- Post Content Column -->
-      <div class="col-lg-8">
+      <div class="col-lg-9">
 
         <!-- Preview Image 
         <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
@@ -96,10 +110,11 @@
             <tr>
               <th></th>
               <th style='font-weight: bold'>State</th>
-              <th style='font-weight: bold'>Pressure(Pa)</th>
-              <th style='font-weight: bold'>Temperature(K)</th>
+              <th style='font-weight: bold'>Pressure</th>
+              <th style='font-weight: bold'>Temperature</th>
               <th style='font-weight: bold'>Values</th>
               <th style='font-weight: bold'>Units</th>
+              <th style='font-weight: bold'>Software</th>
             </tr>
             {% for var in varprops%}
             <tr>
@@ -115,6 +130,7 @@
               <td>{{var.T.min}}&nbsp;&#8658;&nbsp;{{var.T.max}}</td>
               <td style="text-align:right">{{var.values.min|stringformat:".2e"}}&nbsp;&#8658;&nbsp;{{var.values.max|stringformat:".2e"}}</td>
               <td>{{var.unit.symbol}}</td>
+              <td>{{var.software.name}}</td>
             </tr>
             {% endfor %}
             
@@ -131,18 +147,27 @@
       </div>
 
       <!-- Sidebar Widgets Column -->
-      <div class="col-lg-4 col-md-6">
+      <div class="col-lg-9 col-md-6">
 
         <!-- Constant Properties Widget -->
         <div class="card mb-4">
           <h5 class="card-header">Constant properties</h5>
           <div class="card-body">
             <table class="simple-table" style="font-size: 12px;">
+            <tr>
+              <th style='font-weight: bold'>Name</th>
+              <th style='font-weight: bold'>Value</th>
+              <th style='font-weight: bold'>Units</th>
+              <th style='font-weight: bold'>Description</th>
+              <th style='font-weight: bold'>Software</th>
+            </tr>
             {% for prop in constprops %}
                <tr>
                  <th style='font-weight: bold'>{{prop.name}}</th>
                  <th>{{prop.value}}</th>
+                 <th>{{prop.unit.symbol}}</th>
                  <th>{{prop.description}}</th>
+                 <th>{{prop.software.name}}</th>
                </tr>
             {% endfor %}
             </table>
@@ -155,11 +180,20 @@
           <h5 class="card-header">Matrix Properties</h5>
           <div class="card-body">
             <table class="simple-table" style="font-size: 12px;">
+            <tr>
+              <th style='font-weight: bold'>Name</th>
+              <th style='font-weight: bold'>Value</th>
+              <th style='font-weight: bold'>Units</th>
+              <th style='font-weight: bold'>Description</th>
+              <th style='font-weight: bold'>Software</th>
+            </tr>
             {% for prop in matrixprops %}
                <tr>
                  <th style="font-weight: bold">{{prop.name}}</th>
                  <th>{{prop.value}}</th>
+                 <th>{{prop.unit.symbol}}</th>
                  <th>{{prop.description}}</th>
+                 <th>{{prop.software.name}}</th>
                </tr>
             {% endfor %}
             </table>

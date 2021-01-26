@@ -110,6 +110,7 @@ class AbstractVariableProperty(BaseModel):
     p = MyArrayField(null=True, blank=True, verbose_name='Pressure [Pa]') #Pascals
     T = MyArrayField(null=True, blank=True, verbose_name='Temperature [K]') #Kelvin
     values = MyArrayField(null=True, blank=True)
+    software = models.ForeignKey("software.Software",on_delete=models.CASCADE, null=True)
     
     def __str__(self):
         return self.name
@@ -133,6 +134,7 @@ class AbstractConstProperty(BaseModel):
     state = models.PositiveIntegerField(choices=MATERIAL_STATES,default=0)
     description = models.TextField(null=True,blank=True)
     value = models.FloatField(null=True)
+    software = models.ForeignKey("software.Software",on_delete=models.CASCADE, null=True)
         
     def __str__(self):
         return self.name
@@ -152,6 +154,7 @@ class AbstractMatrixProperty(BaseModel):
     unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
     value = models.CharField(max_length=500)
     state = models.PositiveIntegerField(choices=MATERIAL_STATES,default=0)
+    software = models.ForeignKey("software.Software",on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name

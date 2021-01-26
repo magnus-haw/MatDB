@@ -275,6 +275,8 @@ class PATO_formatter(Formatter):
         none_unit = ComboUnit.objects.get(name='None')
         matv.save()
 
+        soft = Software.objects.get(name="PATO")
+
         p = Pform['vparams']['Pressure(Pa)']
         T = Pform['vparams']['Temperature(K)']
         for key in Pform['vparams'].keys():
@@ -301,7 +303,7 @@ class PATO_formatter(Formatter):
                     for unit in units:
                         if ustrings[0][1:-1] in unit.alternate_names:
                             vprop.unit = unit
-                
+                vprop.software = soft
                 vprop.save()
         
         names, vals, notes = Pform['const_names'],Pform['const_vals'],Pform['const_notes']
@@ -329,6 +331,7 @@ class PATO_formatter(Formatter):
                 mx.unit = myunit
                 mx.value=vals[i]
                 mx.description = "matrix elements"
+                mx.software = soft
                 mx.save()
 
             else:
@@ -339,6 +342,7 @@ class PATO_formatter(Formatter):
                 const.description=notes[i]
                 const.value=float(vals[i])
                 const.unit = myunit
+                const.software = soft
                 const.save()
 
 class FIAT_formatter(Formatter):
@@ -532,6 +536,7 @@ class FIAT_formatter(Formatter):
         none_unit = ComboUnit.objects.get(name='None')
         matv.save()
 
+        soft = Software.objects.get(name="FIAT")
         p = Pform['vparams']['Pressure(atm)']
         T = Pform['vparams']['Temperature(R)']
         for key in Pform['vparams'].keys():
@@ -558,6 +563,7 @@ class FIAT_formatter(Formatter):
                     for unit in units:
                         if ustrings[0][1:-1] in unit.alternate_names:
                             vprop.unit = unit
+                vprop.software = soft
                 vprop.save()
 
         p = Pform['vparams_h']['Pressure(atm)']
@@ -580,6 +586,7 @@ class FIAT_formatter(Formatter):
                     for unit in units:
                         if ustrings[0][1:-1] in unit.alternate_names:
                             vprop.unit = unit
+                vprop.software = soft
                 vprop.save()
         names, vals, notes = Pform['const_names'],Pform['const_vals'],Pform['const_notes']
         for i in range(0,len(names)):
@@ -606,6 +613,7 @@ class FIAT_formatter(Formatter):
                 mx.unit = myunit
                 mx.value=vals[i]
                 mx.description = "matrix elements"
+                mx.software = soft
                 mx.save()
 
             else:
@@ -616,6 +624,7 @@ class FIAT_formatter(Formatter):
                 const.description=notes[i]
                 const.value=float(vals[i])
                 const.unit = myunit
+                const.software = soft
                 const.save()
                 
 class ICARUS_formatter(Formatter):
