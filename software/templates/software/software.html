@@ -57,6 +57,7 @@
       </div>
       <!-- /.card -->
 
+      <!-- Tutorials -->
       <div class="col-lg-8 mb-4">
         <div class="card h-100 text-left">
           <div class="card-body">
@@ -64,25 +65,75 @@
             <div class="row">
               <div class="col-md-12">
                 <ul>
+
                   {% for tutorial in tutorials %}
-                  <li><a href="{% url 'tutorial-detail' tutorial.pk %}">{{tutorial.name}} [v{{tutorial.software_version.version}}]</a></li>
+                  <li><a href="{% url 'tutorial-detail' tutorial.pk %}">{{tutorial.name}}</a></li>
                   {% endfor %}
                 </ul>
               </div>
             </div>
           </div>
           
-        </div>
+        </div> 
+        <!-- /.card -->
       </div>
-      <!-- /.card -->
+      <!-- /.col -->
       
     </div>
     <!-- /.row -->
 
+    <!-- references -->
+    {% if refs %}
+    <div class="row">
+      <div class="col-lg-12 mb-4">
+        <div class="card h-100 text-left">
+          <div class="card-body">
+            <h4 class="card-title">References</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="simple-table" style="font-size: 12px;">
+                  <tr>
+                    <th><b>Author(s)</b></th>
+                    <th><b>Title</b></th>
+                    <th><b>RefType</b></th>
+                    <th><b>Doc #</b></th>
+                    <th><b>Published</b></th>
+                    <th><b>File Download</b></th>
+                  </tr>
+                  
+                    {% for ref in refs %}
+                    <tr>
+                      <td>{{ref.authors}}</td>
+                      {% if ref.link %}
+                        <td><a href="{{ref.link}}">{{ref.title}}</a></td>
+                      {% else %}
+                        <td><a href="{% url 'reference-detail' ref.pk %}">{{ref.title}}</a></td>
+                      {% endif %}
+                      <td>{{ref.get_reftype_display}}</td>
+                      <td>{{ref.doc_num}}</td>
+                      <td>{{ref.published}}</td>
+                      {% if ref.file %}
+                      <td><a href="{{ref.file.url}}">download</a>
+                      {% else %}
+                      <td></td>
+                      {% endif %}
+                    {% endfor %}                  
+                </table>
+              </div>
+            </div>
+          </div>
+          
+        </div> 
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    {% endif %}
   </div>
   <!-- /.container -->
 
 {% endblock %}
 
 <!-- Footer -->
-  {% block lastupdated %}{{material.last_modified}}{% endblock %}
+  {% block lastupdated %}{{software.last_modified}}{% endblock %}

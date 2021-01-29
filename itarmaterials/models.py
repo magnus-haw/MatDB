@@ -1,6 +1,6 @@
 from django.db import models
 from materials.models import AbstractMaterial, AbstractMaterialVersion, AbstractVariableProperty
-from materials.models import AbstractConstProperty, AbstractMatrixProperty, AbstractReference
+from materials.models import AbstractConstProperty, AbstractMatrixProperty
 
 #################################################################################
 ###########                     ITAR MATERIALS                  #################
@@ -48,12 +48,3 @@ class ITARMatrixProperty(AbstractMatrixProperty):
 
     class Meta:
         verbose_name_plural = "ITAR Matrix properties"
-
-class ITARReference(AbstractReference):
-    material_version = models.ForeignKey(ITARMaterialVersion, on_delete=models.SET_NULL, null=True)
-    
-    def isITAR(self):
-        return True
-        
-    class Meta:
-        verbose_name_plural = "ITAR References"

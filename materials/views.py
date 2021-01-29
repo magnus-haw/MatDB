@@ -7,12 +7,13 @@ from django.urls import reverse
 from django.db import transaction
 
 from .models import Material, MaterialVersion, VariableProperty 
-from .models import ConstProperty, MatrixProperty, Reference
+from .models import ConstProperty, MatrixProperty
 from .forms import UploadMaterialVersion
 
 from itarmaterials.models import ITARMaterial
 from software.file_formatters import PATO_formatter, FIAT_formatter, ICARUS_formatter
 from software.models import ExportFormat, SoftwareVersion, Software
+from sources.models import Reference, Tutorial
 
 import numpy as np
 from bokeh.plotting import figure
@@ -37,7 +38,8 @@ def index(request):
 
 def material_view(request,matpk):
     mat = get_object_or_404(Material, pk=matpk)
-    refs = Reference.objects.filter(material_version__material = mat)
+    refs = Reference.objects.filter(materials = mat)
+    print(refs)
     form_error = False
     form_success = False
 

@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from .models import ITARMaterial, ITARMaterialVersion, ITARReference, ITARVariableProperty
+from .models import ITARMaterial, ITARMaterialVersion, ITARVariableProperty
+from sources.models import Reference
+
 from materials.views import mycolors
 
 import numpy as np
@@ -11,21 +13,13 @@ from bokeh.layouts import column
 # Create your views here.
 def itarmaterial_view(request,matpk):
     mat = get_object_or_404(ITARMaterial, pk=matpk)
-    refs = ITARReference.objects.filter(material_version__material = mat)
+    refs = Reference.objects.filter(itarmaterials = mat)
 
     context = {
             'material':mat,
             'references':refs,
             }
     return render(request, 'materials/material.html', context = context)
-
-def itarreference_view(request,pk):
-    ref = get_object_or_404(ITARReference, pk=pk)
-
-    context = {
-            'reference':ref,
-            }
-    return render(request, 'materials/reference.html', context = context)
 
 def itarmaterial_version_view(request,matv_pk):
     matv = get_object_or_404(ITARMaterialVersion, pk=matv_pk)

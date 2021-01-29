@@ -7,29 +7,29 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contacts', '0001_initial'),
+        #('contacts', '0001_initial'),
         ('itarmaterials', '0008_auto_20210113_2210'),
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='itarmaterialversion',
-            name='material_expert',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='itarmaterialversion_material_expert', to='contacts.person'),
-        ),
-        migrations.AlterField(
-            model_name='itarmaterialversion',
-            name='material_lead',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='itarmaterialversion_material_lead', to='contacts.person'),
-        ),
-        migrations.AlterField(
-            model_name='itarmaterialversion',
-            name='modeling_expert',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='itarmaterialversion_modeling_expert', to='contacts.person'),
-        ),
-        migrations.AlterField(
-            model_name='itarmaterialversion',
-            name='other_contact',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='itarmaterialversion_other_contact', to='contacts.person'),
-        ),
+        # migrations.AlterField(
+        #     model_name='itarmaterialversion',
+        #     name='material_expert',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='itarmaterialversion_material_expert', to='contacts.person'),
+        # ),
+        # migrations.AlterField(
+        #     model_name='itarmaterialversion',
+        #     name='material_lead',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='itarmaterialversion_material_lead', to='contacts.person'),
+        # ),
+        # migrations.AlterField(
+        #     model_name='itarmaterialversion',
+        #     name='modeling_expert',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='itarmaterialversion_modeling_expert', to='contacts.person'),
+        # ),
+        # migrations.AlterField(
+        #     model_name='itarmaterialversion',
+        #     name='other_contact',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='itarmaterialversion_other_contact', to='contacts.person'),
+        # ),
     ]

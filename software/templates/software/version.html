@@ -20,25 +20,21 @@
       <li class="breadcrumb-item active">{{swv.software.name}}&nbsp;{{swv.version}}</li>
 </ol>
 <hr>
-
-<hr>
-    <div class="row">
-
-      <!-- Post Content Column -->
-      <div class="col-lg-8">
-
-        
-        <hr>
-      </div>
-
-      <!-- Sidebar Widgets Column -->
-      <div class="col-lg-4 col-md-6">
-
-      </div>
-      <!-- /.col -->
+  <!-- Intro Content -->
+  <div class="row">
+    <div class="col-lg-6">
+      {% if swv.software.image %}
+      <img class="img-fluid rounded mb-4" src="{{swv.software.image.url}}" alt="">
+      {% endif %}
     </div>
-    <!-- /.row -->
+    <div class="col-lg-6">
+      <h2>Version changes</h2>
+
+      <p>{{swv.version_changes | safe}}</p>
+    </div>
+  </div>
+  <!-- /.row -->
 {% endblock %}
 
 
-{% block lastupdated %}{{matv.last_modified}}{% endblock %}
+{% block lastupdated %}{{swv.last_modified}}{% endblock %}

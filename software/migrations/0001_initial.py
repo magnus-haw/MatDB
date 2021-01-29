@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('contacts', '0002_auto_20210113_2223'),
+        #('contacts', '0002_auto_20210113_2223'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('materials', '0025_auto_20210117_2317'),
     ]
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('how_to_use', ckeditor_uploader.fields.RichTextUploadingField(blank=True, null=True)),
                 ('image', models.ImageField(blank=True, null=True, upload_to='')),
                 ('modified_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
-                ('point_of_contact', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='poc', to='contacts.person')),
+                #('point_of_contact', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='poc', to='contacts.person')),
             ],
             options={
                 'abstract': False,
@@ -47,9 +47,9 @@ class Migration(migrations.Migration):
                 ('version', models.CharField(max_length=25, unique=True)),
                 ('short_description', models.CharField(blank=True, max_length=200, null=True)),
                 ('version_changes', ckeditor_uploader.fields.RichTextUploadingField(blank=True, null=True)),
-                ('lead_developer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='lead_developer', to='contacts.person')),
+                #('lead_developer', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='lead_developer', to='contacts.person')),
                 ('modified_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
-                ('other_contact', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='other_contact', to='contacts.person')),
+                #('other_contact', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='other_contact', to='contacts.person')),
                 ('software', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='software.software')),
             ],
             options={

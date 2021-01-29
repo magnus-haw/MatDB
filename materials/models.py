@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 
 from units.models import BaseUnit, ComboUnit
-from contacts.models import Person
 
 import numpy as np
 from scipy import interpolate
@@ -48,7 +47,8 @@ class BaseModel(models.Model):
 class AbstractMaterial(BaseModel):
     name = models.CharField(max_length=500,unique=True)
     short_name = models.CharField(max_length=25,unique=True,null=True,blank=True)
-    description = models.TextField(blank=True,null=True)
+    short_description = models.CharField(max_length=100,blank=True,null=True)
+    description = RichTextField(blank=True,null=True)
     image = models.ImageField(blank=True, null=True)
     
     def __str__(self):
@@ -78,10 +78,10 @@ class AbstractMaterialVersion(BaseModel):
     material = models.ForeignKey(Material,on_delete=models.CASCADE)
     version = models.CharField(max_length=25)
     grade = models.CharField(max_length=1,choices=MATERIAL_GRADES,null=True,blank=True)
-    material_lead = models.ForeignKey(Person, blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_material_lead')
-    material_expert = models.ForeignKey(Person, blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_material_expert')
-    modeling_expert = models.ForeignKey(Person, blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_modeling_expert')
-    other_contact = models.ForeignKey(Person, blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_other_contact')
+    material_lead = models.ForeignKey('sources.Person', blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_material_lead')
+    material_expert = models.ForeignKey('sources.Person', blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_material_expert')
+    modeling_expert = models.ForeignKey('sources.Person', blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_modeling_expert')
+    other_contact = models.ForeignKey('sources.Person', blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_other_contact')
     notes = models.TextField(blank=True,null=True)
     datasheet = models.FileField(blank=True,null=True)
     published = models.DateField(blank=True,null=True)
@@ -166,35 +166,3 @@ class MatrixProperty(AbstractMatrixProperty):
 
     class Meta:
         verbose_name_plural = "Matrix properties"
-
-REFERENCE_TYPES = (
-    (0,'Journal article'),
-    (1,'Unpublished report'),
-    (2,'Book'),
-    (3,'Test data'),
-    (4,'Sim data'),
-    (5,'Poster'),
-    (6,'Presentation'),
-    (7,'Other'),
-)
-
-class AbstractReference(BaseModel):
-    material_version = models.ForeignKey(MaterialVersion, on_delete=models.SET_NULL, null=True)
-    title = models.CharField(max_length = 500)
-    doc_num = models.CharField(max_length = 100, null=True, blank=True)
-    reftype = models.PositiveIntegerField(choices=REFERENCE_TYPES, default=0)
-    authors = models.CharField(max_length = 50)
-    body = RichTextUploadingField(null=True, blank=True)
-    published = models.DateField(null=True, blank=True)
-    
-    file = models.FileField(null=True, blank=True)
-    link = models.URLField(null=True, blank=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        abstract = True
-
-class Reference(AbstractReference):
-    pass

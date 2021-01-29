@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Software, SoftwareVersion, Tutorial
+from .models import Software, SoftwareVersion
+from sources.models import Reference, Tutorial
 
 # Create your views here.
 def index(request):
@@ -14,11 +15,13 @@ def index(request):
 
 def software_view(request,swpk):
     sw = get_object_or_404(Software, pk=swpk)
-    tuts = Tutorial.objects.filter(software_version__software = sw)
+    tuts = Tutorial.objects.filter(softwares = sw)
+    refs = Reference.objects.filter(softwares = sw)
 
     context = {
             'software':sw,
             'tutorials':tuts,
+            'refs':refs,
             }
     return render(request, 'software/software.html', context = context)
 
@@ -31,13 +34,3 @@ def software_version_view(request,swvpk):
             'swv':swv,
             }
     return render(request, 'software/version.html', context = context)
-
-def tutorial_view(request,pk):
-    tut = get_object_or_404(Tutorial, pk=pk)
-    if tut.link:
-        return redirect(tut.link)
-
-    context = {
-            'tutorial':tut,
-            }
-    return render(request, 'software/tutorial.html', context = context)
