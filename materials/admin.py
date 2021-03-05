@@ -39,6 +39,7 @@ class MaterialVersionAdmin(BaseAdmin):
     list_display  = ('material','version','grade','notes')
     list_filter = ('material', 'grade')
     search_fields = ('material__name','version','grade','notes')
+    exclude = ('version_value',)
     #save_as = True
 
 admin.site.register(Material, MaterialAdmin)

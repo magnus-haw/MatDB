@@ -1,6 +1,8 @@
 from django.db import models
+from django.core.validators import int_list_validator
 
-from materials.models import BaseModel, MaterialVersion
+from materials.models import BaseModel, MaterialVersion, get_version_value
+from itarmaterials.models import ITARMaterialVersion
 
 from ckeditor_uploader.fields import RichTextUploadingField
 from ckeditor.fields import RichTextField
@@ -23,7 +25,8 @@ class AbstractSoftware(BaseModel):
 
 class AbstractSoftwareVersion(BaseModel):
     software = models.ForeignKey("Software", on_delete=models.CASCADE)
-    version = models.CharField(max_length=25)
+    version = models.CharField(max_length=25, validators=[int_list_validator(sep='.')])
+    version_value = models.PositiveIntegerField(null=True,blank=True)
     published = models.DateField(null=True, blank=True)
     link = models.URLField(null=True, blank=True)
     short_description = models.CharField(max_length=200,null=True,blank=True)
@@ -34,8 +37,14 @@ class AbstractSoftwareVersion(BaseModel):
     def __str__(self):
         return self.software.name + "-" + self.version
 
+    def save(self, *args, **kwargs):
+        self.version_value = get_version_value(self.version) # enforce version serialization
+        super().save(*args, **kwargs)  # Call the parent save() method.
+
     class Meta:
         abstract = True
+        unique_together = ('software', 'version',)
+        ordering = ['-version_value']
 
 class AbstractExportFormat(BaseModel):
     material_version = models.ForeignKey(MaterialVersion, on_delete=models.CASCADE)
@@ -51,6 +60,7 @@ class AbstractExportFormat(BaseModel):
 
     class Meta:
         abstract = True
+        unique_together = ('software_version', 'material_version',)
 
 class Software(AbstractSoftware):
     pass
@@ -62,3 +72,9 @@ class ExportFormat(AbstractExportFormat):
 
     class Meta:
         verbose_name_plural = "Export format"
+
+class ITARExportFormat(AbstractExportFormat):
+    material_version = models.ForeignKey(ITARMaterialVersion, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "ITAR export format"

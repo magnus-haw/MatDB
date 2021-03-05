@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import int_list_validator
 
 from units.models import BaseUnit, ComboUnit
 
@@ -74,9 +75,27 @@ MATERIAL_GRADES = (
     ('D','Estimate Only'),
     ('F','Inconsistent')
 )
+
+def get_version_value(version, delimiter='.'):
+    """Serialize a version string into a sortable integer. valid up to subfields of 99 
+
+    Args:
+        version (str): string consisting of integers separated by periods: 'X.X.X' 
+        delimiter (str, optional): Defaults to '.'
+
+    Returns:
+        ret (int): integer equivalent of version string
+    """
+    vlist = version.split(delimiter)
+    ret = 0.
+    for i,v in enumerate(vlist):
+        ret += (10**(8-2*i) )*int(v)
+    return int(ret)
+
 class AbstractMaterialVersion(BaseModel):
     material = models.ForeignKey(Material,on_delete=models.CASCADE)
-    version = models.CharField(max_length=25)
+    version = models.CharField(max_length=25, validators=[int_list_validator(sep='.')])
+    version_value = models.PositiveIntegerField(null=True,blank=True)
     grade = models.CharField(max_length=1,choices=MATERIAL_GRADES,null=True,blank=True)
     material_lead = models.ForeignKey('sources.Person', blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_material_lead')
     material_expert = models.ForeignKey('sources.Person', blank=True, null=True, on_delete=models.CASCADE, related_name='%(class)s_material_expert')
@@ -89,8 +108,14 @@ class AbstractMaterialVersion(BaseModel):
     def __str__(self):
         return self.material.name + "_" + self.version
 
+    def save(self, *args, **kwargs):
+        self.version_value = get_version_value(self.version) # enforce version serialization
+        super().save(*args, **kwargs)  # Call the parent save() method.
+
     class Meta:
         abstract = True
+        unique_together = ('material', 'version',)
+        ordering = ['-version_value']
 
 class MaterialVersion(AbstractMaterialVersion):
     pass

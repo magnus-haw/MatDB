@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from datetime import date
 
-from .models import ExportFormat, Software, SoftwareVersion
+from .models import ExportFormat, Software, SoftwareVersion, ITARExportFormat
 from itarmaterials.models import ITARMaterial, ITARMaterialVersion, ITARVariableProperty, ITARConstProperty, ITARMatrixProperty
 from materials.models import MaterialVersion, Material, VariableProperty, ConstProperty, MatrixProperty
 from units.models import ComboUnit
@@ -71,19 +71,17 @@ class Formatter(object):
 
     # Update the ExportFormat for a new material version
     def update_export_format(self, matv):
-        latest_software = {}
-        for softv in SoftwareVersion.objects.all():
-            if softv.software.name not in latest_software.keys():
-                latest_software[softv.software.name] = softv.version
-            else:
-                if latest_software[softv.software.name] < softv.version:
-                    latest_software[softv.software.name] = softv.version
-        for i in latest_software.keys():
-            soft = Software.objects.get(name=i)
-            softv = SoftwareVersion.objects.get(version=latest_software[i], software=soft)
-            description = "<p>" + softv.software.name + " " + softv.version + ": " + matv.material.name + " " + matv.version + "</p>"
-            exp, flag = ExportFormat.objects.get_or_create(material_version=matv, software_version=softv, description=description)
-            exp.save()
+        softwares = Software.objects.all()
+        for soft in softwares:
+            softv = SoftwareVersion.objects.filter(software=soft).order_by('-version_value').first()
+            if softv is not None:
+                description = soft.name + " " + softv.version + ": " + matv.material.name + " " + matv.version
+                if isinstance(matv, MaterialVersion):
+                    exp, flag = ExportFormat.objects.get_or_create(material_version=matv, software_version=softv, description=description)
+                    exp.save()
+                elif isinstance(matv, ITARMaterialVersion):
+                    exp, flag = ITARExportFormat.objects.get_or_create(material_version=matv, software_version=softv, description=description)
+                    exp.save()
 
     # Create a dummy file with the code name, the material name and the material version.
     def export_file(self, matv, softv):
@@ -307,7 +305,9 @@ class PATO_formatter(Formatter):
 
         if ITAR:
             mat = ITARMaterial.objects.get(name=matName)
+            print(mat, "in upload")
             matv,flag = ITARMaterialVersion.objects.get_or_create(material=mat, version=Pform['version'], published=today)
+            print(matv, flag, "in upload")
         else:
             mat = Material.objects.get(name=matName)
             matv,flag = MaterialVersion.objects.get_or_create(material=mat, version=Pform['version'], published=today)
@@ -382,6 +382,7 @@ class PATO_formatter(Formatter):
                 const.value=float(vals[i])
                 const.unit = myunit
                 const.save()
+        return matv
 
 class FIAT_formatter(Formatter):
 
@@ -668,6 +669,8 @@ class FIAT_formatter(Formatter):
                 const.value=float(vals[i])
                 const.unit = myunit
                 const.save()
+        return matv
+
                 
 class ICARUS_formatter(Formatter):
     pass

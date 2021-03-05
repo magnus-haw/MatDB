@@ -2,6 +2,7 @@ from django.db import models
 from materials.models import AbstractMaterial, AbstractMaterialVersion, AbstractVariableProperty
 from materials.models import AbstractConstProperty, AbstractMatrixProperty
 
+
 #################################################################################
 ###########                     ITAR MATERIALS                  #################
 #################################################################################
@@ -48,3 +49,4 @@ class ITARMatrixProperty(AbstractMatrixProperty):
 
     class Meta:
         verbose_name_plural = "ITAR Matrix properties"
+

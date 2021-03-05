@@ -42,20 +42,27 @@ def material_view(request,matpk):
     print(refs)
     form_error = False
     form_success = False
+    form_error_mesg = ""
 
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = UploadMaterialVersion(request.POST, request.FILES)
         # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            csvfile = request.FILES['file']
-            pform = eval(form.cleaned_data["upload_format"].name + "_formatter()")
-            pform.upload_file(csvfile)
-            matv = MaterialVersion.objects.get(material=form.cleaned_data["material"], version=form.cleaned_data["version"])
-            pform.update_export_format(matv)
-            # redirect to a new URL:
-            form_success = True
+            try:
+                # process the data in form.cleaned_data as required
+                csvfile = request.FILES['file']
+                pform = eval(form.cleaned_data["upload_format"].name + "_formatter()")
+                pform.upload_file(csvfile)
+                print("finished upload")
+                matv = MaterialVersion.objects.get(material=form.cleaned_data["material"], version=form.cleaned_data["version"])
+                pform.update_export_format(matv)
+                # redirect to a new URL:
+                form_success = True
+            except Exception as inst:
+                print(inst)
+                form_error = True
+                form_error_mesg = inst
         else:
             print(form.errors)
             form_error = True
@@ -68,6 +75,7 @@ def material_view(request,matpk):
             'references':refs,
             'form':form,
             'form_error':form_error,
+            'error_mesg':form_error_mesg,
             'form_success':form_success,
             }
     return render(request, 'materials/material.html', context = context)
@@ -97,7 +105,7 @@ def material_version_view(request,matv_pk):
         # raise Http404
         return HttpResponseRedirect(request.path_info)
 
-    constprops = matv.constproperty_set.all().order_by('software')
+    constprops = matv.constproperty_set.all().order_by('software','state')
     varprops = matv.variableproperty_set.all().order_by('software','state')
     matrixprops = matv.matrixproperty_set.all().order_by('software','state')
     download = ExportFormat.objects.filter(material_version=matv)
@@ -107,7 +115,7 @@ def material_version_view(request,matv_pk):
         soft_name = request.POST['views']
         print(soft_name)
         if soft_name == "All":
-            constprops = matv.constproperty_set.all().order_by('software')
+            constprops = matv.constproperty_set.all().order_by('software','state')
             varprops = matv.variableproperty_set.all().order_by('software', 'state')
             matrixprops = matv.matrixproperty_set.all().order_by('software', 'state')
         else:

@@ -49,10 +49,16 @@ class BaseUnitPower(models.Model):
     unit = models.ForeignKey(BaseUnit, on_delete=models.CASCADE)
     power = models.IntegerField(default=0)
 
+SYSTEM_TYPES = (
+    (0,'SI'),
+    (1,'Imperial'),
+)
+
 class ComboUnit(models.Model):
     name = models.CharField(max_length=20)
     symbol = models.CharField(max_length=20)
     alternate_names = models.TextField(null=True, blank=True)
+    system = models.PositiveIntegerField(default=0, choices=SYSTEM_TYPES)
 
     def dims(self):
         alldims = np.zeros(7)

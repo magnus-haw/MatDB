@@ -71,7 +71,8 @@
                                 {{ form.as_p }}
                           </div>
                           {% if form_error %}
-                          <p>Failure!</p>
+                          <p>Error!</p>
+                          {{error_mesg}}
                           {% endif %}
                           {% if form_success %}
                           <p>Success!</p>
@@ -94,13 +95,13 @@
 
                   <ul>
                   {% if material.isITAR %}
-                    {% for matv in material.itarmaterialversion_set.all reversed%}
+                    {% for matv in material.itarmaterialversion_set.all %}
                     {% if matv.published %}
                     <li><a href="{% url 'itarversion-detail' matv.pk %}">{{matv.version}}</a></li>
                     {% endif %}
                     {% endfor %}
                   {% else %}
-                    {% for matv in material.materialversion_set.all reversed%}
+                    {% for matv in material.materialversion_set.all %}
                     {% if matv.published %}
                     <li><a href="{% url 'version-detail' matv.pk %}">{{matv.version}}</a></li>
                     {% endif %}
