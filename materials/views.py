@@ -5,6 +5,9 @@ from django.views import generic
 from django.contrib import messages
 from django.urls import reverse
 from django.db import transaction
+from django.db.utils import DEFAULT_DB_ALIAS
+from django.contrib.admin.utils import NestedObjects
+from django.core import serializers
 
 from .models import Material, MaterialVersion, VariableProperty 
 from .models import ConstProperty, MatrixProperty
@@ -21,6 +24,14 @@ from bokeh.embed import components
 from bokeh.models import LinearAxis,Range1d
 from bokeh.layouts import column
 # Write your views here
+
+def export_to_json(query):
+    collector = NestedObjects(using=DEFAULT_DB_ALIAS)
+    collector.collect(query)
+    related_objects = collector.data
+    related_objects = [instance for cls, instances in collector.data.items() for instance in instances]
+    data = serializers.serialize("json", related_objects)
+    return data
 
 def index(request):
     nmat = Material.objects.count()
@@ -136,6 +147,20 @@ def material_version_view(request,matv_pk):
 
 mycolors = ['green','red','blue','cyan','orange','black','magenta','purple','olive','lime','yellow','gold','darkred','salmon',
             'deeppink','coral','turquoise','teal','darkkhaki','khaki','navy','steelblue']
+
+###
+# def export_material_version(request, matv_pk, fileformat):
+#     matv = get_object_or_404(MaterialVersion, pk=matv_pk)
+#     class_export_model = get_formatter(fileformat)
+#     file_path = class_export_model.export_file(matv)
+#     if os.path.exists(file_path):
+#         with open(file_path, 'rb') as fh:
+#             response = HttpResponse(fh.read(),content_type='application/force-download')
+#             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+#             os.remove(file_path)
+#             return response
+#     return HttpResponseRedirect(request.path_info)
+
 
 def vprop_view(request,vprop_pk):
     vprop = get_object_or_404(VariableProperty, pk=vprop_pk)

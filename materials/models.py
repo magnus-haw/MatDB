@@ -61,13 +61,6 @@ class AbstractMaterial(BaseModel):
 class Material(AbstractMaterial):
     pass
 
-
-MATERIAL_RATING = (
-    (0,'Untested'),
-    (1,'Tested'),
-    (2,'Validated')
-)
-
 MATERIAL_GRADES = (
     ('A','Validated'),
     ('B','Limited Validation'),

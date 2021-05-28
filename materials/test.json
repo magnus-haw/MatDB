@@ -1,0 +1,1430 @@
+[{
+        "model": "materials.materialversion",
+        "pk": 9,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.470Z",
+            "last_modified": "2021-03-04",
+            "modified_by": null,
+            "material": 2,
+            "version": "3.0.3",
+            "version_value": 300030000,
+            "grade": null,
+            "material_lead": null,
+            "material_expert": null,
+            "modeling_expert": null,
+            "other_contact": null,
+            "notes": null,
+            "datasheet": "",
+            "published": "2021-01-26"
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 150,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.477Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "cp_virgin(J/kg/K)",
+            "unit": 10,
+            "state": 0,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[ 879.  984. 1300. 1470. 1570. 1720. 1860. 1930. 1980. 1990. 2000. 2010.\\n 2010. 2010.  879.  984. 1300. 1470. 1570. 1720. 1860. 1930. 1980. 1990.\\n 2000. 2010. 2010. 2010.]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 151,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.482Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "h_virgin(J/kg)",
+            "unit": 11,
+            "state": 0,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[-897000. -857000. -690000. -537000. -402000.  -91200.  406000.  933000.\\n 1480000. 2030000. 2580000. 3700000. 4810000. 6150000. -897000. -857000.\\n -690000. -537000. -402000.  -91200.  406000.  933000. 1480000. 2030000.\\n 2580000. 3700000. 4810000. 6150000.]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 152,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.486Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "ki_virgin(W/m/K)",
+            "unit": 14,
+            "state": 0,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.698 0.872 1.11  1.75\\n 2.78  2.78  0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.698 0.872\\n 1.11  1.75  2.78  2.78 ]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 153,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.490Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "kj_virgin(W/m/K)",
+            "unit": 14,
+            "state": 0,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.698 0.872 1.11  1.75\\n 2.78  2.78  0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.698 0.872\\n 1.11  1.75  2.78  2.78 ]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 154,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.494Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "kk_virgin(W/m/K)",
+            "unit": 14,
+            "state": 0,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.698 0.872 1.11  1.75\\n 2.78  2.78  0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.698 0.872\\n 1.11  1.75  2.78  2.78 ]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 155,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.498Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "emissivity_virgin(-)",
+            "unit": 13,
+            "state": 0,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8\\n 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 156,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.503Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "absorptivity_virgin(-)",
+            "unit": 13,
+            "state": 0,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8\\n 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 157,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.507Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "cp_char(J/kg/K)",
+            "unit": 10,
+            "state": 1,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[ 733.  783. 1090. 1320. 1430. 1680. 1840. 1970. 2050. 2090. 2110. 2140.\\n 2150. 2150.  733.  783. 1090. 1320. 1430. 1680. 1840. 1970. 2050. 2090.\\n 2110. 2140. 2150. 2150.]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 158,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.511Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "h_char(J/kg)",
+            "unit": 11,
+            "state": 1,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[ -32200.       0.  137000.  271000.  394000.  687000. 1180000. 1710000.\\n 2260000. 2840000. 3420000. 4600000. 5790000. 7230000.  -32200.       0.\\n  137000.  271000.  394000.  687000. 1180000. 1710000. 2260000. 2840000.\\n 3420000. 4600000. 5790000. 7230000.]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 159,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.515Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "ki_char(W/m/K)",
+            "unit": 14,
+            "state": 1,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.605 0.729 0.922 1.46\\n 2.32  2.32  0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.605 0.729\\n 0.922 1.46  2.32  2.32 ]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 160,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.519Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "kj_char(W/m/K)",
+            "unit": 14,
+            "state": 1,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.605 0.729 0.922 1.46\\n 2.32  2.32  0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.605 0.729\\n 0.922 1.46  2.32  2.32 ]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 161,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.523Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "kk_char(W/m/K)",
+            "unit": 14,
+            "state": 1,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.605 0.729 0.922 1.46\\n 2.32  2.32  0.398 0.403 0.416 0.453 0.47  0.486 0.523 0.56  0.605 0.729\\n 0.922 1.46  2.32  2.32 ]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 162,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.527Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "emissivity_char(-)",
+            "unit": 13,
+            "state": 1,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9\\n 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 163,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.531Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "absorptivity_char(-)",
+            "unit": 13,
+            "state": 1,
+            "p": "[1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06 1.e+06\\n 1.e+06 1.e+06 1.e+06 1.e+06 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00\\n 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00 1.e+00]",
+            "T": "[ 256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940. 2220. 2780.\\n 3330. 4000.  256.  298.  444.  556.  644.  833. 1110. 1390. 1670. 1940.\\n 2220. 2780. 3330. 4000.]",
+            "values": "[0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9\\n 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9]",
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 164,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.881Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "cp_virgin(BTU/lb/R)",
+            "unit": 21,
+            "state": 0,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[0.21  0.235 0.31  0.35  0.375 0.41  0.445 0.462 0.473 0.475 0.478 0.48\\n 0.48 ]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 165,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.886Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "k_tt_virgin(BTU/(ft.s.R)",
+            "unit": 22,
+            "state": 0,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[6.38e-05 6.46e-05 6.68e-05 7.27e-05 7.54e-05 7.80e-05 8.40e-05 8.99e-05\\n 1.12e-04 1.40e-04 1.78e-04 2.81e-04 4.46e-04]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 166,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.890Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "emissivity_virgin(-)",
+            "unit": 13,
+            "state": 0,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 167,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.894Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "absorptivity_virgin(-)",
+            "unit": 13,
+            "state": 0,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8 0.8]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 168,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.898Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "k_ip_virgin(BTU/(ft.s.R)",
+            "unit": 22,
+            "state": 0,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[0.000128 0.000129 0.000134 0.000145 0.000151 0.000156 0.000168 0.00018\\n 0.000224 0.00028  0.000356 0.000562 0.000892]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 169,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.903Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "cp_char(BTU/lb/R)",
+            "unit": 21,
+            "state": 1,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[0.175 0.187 0.261 0.315 0.342 0.4   0.44  0.47  0.49  0.5   0.504 0.51\\n 0.514]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 170,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.907Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "k_tt_char(BTU/(ft.s.R)",
+            "unit": 22,
+            "state": 1,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[6.38e-05 6.46e-05 6.68e-05 7.27e-05 7.54e-05 7.80e-05 8.40e-05 8.99e-05\\n 9.71e-05 1.17e-04 1.48e-04 2.34e-04 3.72e-04]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 171,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.911Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "emissivity_char(-)",
+            "unit": 13,
+            "state": 1,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 172,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.915Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "absorptivity_char(-)",
+            "unit": 13,
+            "state": 1,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9 0.9]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 173,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.918Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "k_ip_char(BTU/(ft.s.R)",
+            "unit": 22,
+            "state": 1,
+            "p": "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]",
+            "T": "[ 460.  536.  800. 1000. 1160. 1500. 2000. 2500. 3000. 3500. 4000. 5000.\\n 6000.]",
+            "values": "[0.000128 0.000129 0.000134 0.000145 0.000151 0.000156 0.000168 0.00018\\n 0.000194 0.000234 0.000296 0.000468 0.000744]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.variableproperty",
+        "pk": 174,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.922Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "h_g(BTU/lb)",
+            "unit": 23,
+            "state": 2,
+            "p": "[1.    1.    1.    1.    1.    1.    1.    1.    1.    1.    1.    1.\\n 1.    1.    1.    1.    1.    1.    1.    1.    1.    1.    0.1   0.1\\n 0.1   0.1   0.1   0.1   0.1   0.1   0.1   0.1   0.1   0.1   0.1   0.1\\n 0.1   0.1   0.1   0.1   0.1   0.1   0.1   0.1   0.01  0.01  0.01  0.01\\n 0.01  0.01  0.01  0.01  0.01  0.01  0.01  0.01  0.01  0.01  0.01  0.01\\n 0.01  0.01  0.01  0.01  0.01  0.01  0.001 0.001 0.001 0.001 0.001 0.001\\n 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001\\n 0.001 0.001 0.001 0.001]",
+            "T": "[ 360.  450.  536.  630.  720.  810.  900. 1080. 1260. 1440. 1620. 1800.\\n 2160. 2520. 2880. 3240. 3600. 4140. 4680. 5220. 5760. 6300.  360.  450.\\n  536.  630.  720.  810.  900. 1080. 1260. 1440. 1620. 1800. 2160. 2520.\\n 2880. 3240. 3600. 4140. 4680. 5220. 5760. 6300.  360.  450.  536.  630.\\n  720.  810.  900. 1080. 1260. 1440. 1620. 1800. 2160. 2520. 2880. 3240.\\n 3600. 4140. 4680. 5220. 5760. 6300.  360.  450.  536.  630.  720.  810.\\n  900. 1080. 1260. 1440. 1620. 1800. 2160. 2520. 2880. 3240. 3600. 4140.\\n 4680. 5220. 5760. 6300.]",
+            "values": "[-2820.   -2910.   -2940.   -2950.   -2940.   -2910.   -2870.   -2760.\\n -2560.   -2120.   -1380.    -902.    -520.54   199.3   1156.56  1795.45\\n  2171.37  2745.48  3515.84  4690.04  6532.72  9264.56 -2820.   -2910.\\n -2940.   -2950.04 -2935.73 -2906.25 -2861.94 -2709.23 -2316.08 -1443.91\\n -1001.24  -846.5   -129.33   745.61  1529.21  1876.08  2235.43  2973.02\\n  4263.47  6647.43 10508.33 15032.86 -2820.   -2910.   -2940.   -2949.7\\n -2933.67 -2897.95 -2837.58 -2582.26 -1698.6  -1124.7   -962.55  -536.58\\n   202.57  1219.88  1574.48  1917.31  2368.77  3583.73  6296.01 11237.62\\n 16306.   20115.42 -2820.   -2910.   -2940.   -2948.61 -2927.35 -2874.61\\n -2781.65 -2218.65 -1258.17 -1098.84  -613.66  -227.02   605.66  1276.73\\n  1596.88  2017.28  2720.    5240.   11000.   16500.   20200.   22500.  ]",
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 270,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.536Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "nSolidPhases",
+            "unit": 13,
+            "state": 0,
+            "description": "number of solid phases",
+            "value": 2,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 271,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.539Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "rhoI[1] (kg/m3)",
+            "unit": 17,
+            "state": 0,
+            "description": "intrinsic density of the fibers",
+            "value": 1600,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 272,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.543Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "epsI[1] (-)",
+            "unit": 13,
+            "state": 0,
+            "description": "volume fraction of the fibrous preform",
+            "value": 0.1,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 273,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.546Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "rhoI[2] (kg/m3)",
+            "unit": 17,
+            "state": 0,
+            "description": "intrinsic density of the matrix",
+            "value": 1200,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 274,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.549Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "epsI[2] (-)",
+            "unit": 13,
+            "state": 0,
+            "description": "volume fraction of the matrix",
+            "value": 0.1,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 275,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.559Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "eps_g_v",
+            "unit": 13,
+            "state": 0,
+            "description": "virgin material porosity",
+            "value": 0.8,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 276,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.562Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "eps_g_c",
+            "unit": 13,
+            "state": 1,
+            "description": "char material porosity",
+            "value": 0.85,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 277,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.565Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "Zx[C]",
+            "unit": 13,
+            "state": 2,
+            "description": "Elemental composition of the pyrolysis gases (Carbon)",
+            "value": 0.206,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 278,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.569Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "Zx[H]",
+            "unit": 13,
+            "state": 2,
+            "description": "Elemental composition of the pyrolysis gases (Hydrogen)",
+            "value": 0.679,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 279,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.572Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "Zx[O]",
+            "unit": 13,
+            "state": 2,
+            "description": "Elemental composition of the pyrolysis gases (Oxygen)",
+            "value": 0.115,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 280,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.575Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "F[2][1]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 1",
+            "value": 0.25,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 281,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.578Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "A[2][1] (1/s)",
+            "unit": 9,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 1",
+            "value": 12000,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 282,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.581Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "E[2][1] (kg.m2/(s2.mole))",
+            "unit": 16,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 1",
+            "value": 71130.89,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 283,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.584Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "m[2][1]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 1",
+            "value": 3,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 284,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.587Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "n[2][1]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 1",
+            "value": 0,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 285,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.591Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "T[2][1] (K)",
+            "unit": 14,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 1",
+            "value": 333,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 286,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.594Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "h[2][1] (m2/s2)",
+            "unit": 19,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 1",
+            "value": -4000000,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 287,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.597Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "F[2][2]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 2",
+            "value": 0.19,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 288,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.600Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "A[2][2] (1/s)",
+            "unit": 9,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 2",
+            "value": 498000000,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 289,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.603Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "E[2][2] (kg.m2/(s2.mole))",
+            "unit": 16,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 2",
+            "value": 170000,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 290,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.606Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "m[2][2]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 2",
+            "value": 3,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 291,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.610Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "n[2][2]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 2",
+            "value": 0,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 292,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.613Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "T[2][2] (K)",
+            "unit": 14,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 2",
+            "value": 556,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 293,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.616Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "h[2][2] (m2/s2)",
+            "unit": 19,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 2",
+            "value": -4000000,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 294,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.619Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "F[2][3]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 3",
+            "value": 0.06,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 295,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.622Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "A[2][3] (1/s)",
+            "unit": 9,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 3",
+            "value": 498000000,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 296,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.625Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "E[2][3] (kg.m2/(s2.mole))",
+            "unit": 16,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 3",
+            "value": 170000,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 297,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.628Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "m[2][3]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 3",
+            "value": 3,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 298,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.631Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "n[2][3]",
+            "unit": 13,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 3",
+            "value": 0,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 299,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.634Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "T[2][3] (K)",
+            "unit": 14,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 3",
+            "value": 556,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 300,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.638Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "h[2][3] (m2/s2)",
+            "unit": 19,
+            "state": 2,
+            "description": "Parameter of pyrolysis reaction 3",
+            "value": -4000000,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 301,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.641Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "nPyroReac[1]",
+            "unit": 13,
+            "state": 2,
+            "description": "Number of pyrolysis reactions for phase [1]",
+            "value": 0,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 302,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.644Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "nPyroReac[2]",
+            "unit": 13,
+            "state": 2,
+            "description": "Number of pyrolysis reactions for phase [2]",
+            "value": 3,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 303,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.927Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "Type",
+            "unit": 13,
+            "state": 2,
+            "description": "Material type: pyrolysis and ablation",
+            "value": 4,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 304,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.931Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "DH1 (BTU/lb)",
+            "unit": 23,
+            "state": 0,
+            "description": "Heat of fomation of virgin material",
+            "value": -368.51,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 305,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.934Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "DH2 (BTU/lb)",
+            "unit": 23,
+            "state": 1,
+            "description": "Heat of fomation of char material",
+            "value": 0,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 306,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.937Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "DH3 (BTU/lb)",
+            "unit": 23,
+            "state": 2,
+            "description": "Enthalpy offset for pyrolysis gas",
+            "value": 0,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 307,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.941Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "TDH (R)",
+            "unit": 23,
+            "state": 0,
+            "description": "Reference temperature for the heats of formation",
+            "value": 536.4,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 308,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.944Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "GAMMA (-)",
+            "unit": 13,
+            "state": 0,
+            "description": "Resin volume fraction",
+            "value": 0.5,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 309,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.948Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "PHI (-)",
+            "unit": 13,
+            "state": 0,
+            "description": "Porosity of the virgin material",
+            "value": 0.8,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 310,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.951Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "RVI_1 (lb/ft3)",
+            "unit": 24,
+            "state": 0,
+            "description": "Initial density of component 1",
+            "value": 18.727999999999998,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 311,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.954Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "RCI_1 (lb/ft3)",
+            "unit": 24,
+            "state": 0,
+            "description": "Residual density of component 1",
+            "value": 0,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 312,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.957Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "AI_1 (1/s)",
+            "unit": 9,
+            "state": 0,
+            "description": "Pre-exponential factor for component 1",
+            "value": 12000,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 313,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.960Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "PSII_1 (-)",
+            "unit": 13,
+            "state": 0,
+            "description": "Density factor exponent for component 1",
+            "value": 3,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 314,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.964Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "EI_1 (R)",
+            "unit": 13,
+            "state": 0,
+            "description": "Activation temperature for reaction 1",
+            "value": 15400,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 315,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.967Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "TRACI_1 (R)",
+            "unit": 13,
+            "state": 0,
+            "description": "Minimum temperature for reaction 1",
+            "value": 600,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 316,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.970Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "RVI_2 (lb/ft3)",
+            "unit": 24,
+            "state": 0,
+            "description": "Initial density of component 2",
+            "value": 56.185,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 317,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.973Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "RCI_2 (lb/ft3)",
+            "unit": 24,
+            "state": 0,
+            "description": "Residual density of component 2",
+            "value": 37.457,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 318,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.976Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "AI_2 (1/s)",
+            "unit": 9,
+            "state": 0,
+            "description": "Pre-exponential factor for component 2",
+            "value": 4480000000,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 319,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.979Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "PSII_2 (-)",
+            "unit": 13,
+            "state": 0,
+            "description": "Density factor exponent for component 2",
+            "value": 3,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 320,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.983Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "EI_2 (R)",
+            "unit": 13,
+            "state": 0,
+            "description": "Activation temperature for reaction 2",
+            "value": 36800,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 321,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.986Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "TRACI_2 (R)",
+            "unit": 13,
+            "state": 0,
+            "description": "Minimum temperature for reaction 2",
+            "value": 1000,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 322,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.989Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "RVI_3 (lb/ft3)",
+            "unit": 24,
+            "state": 0,
+            "description": "Initial density of component 3",
+            "value": 99.885,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 323,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.993Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "RCI_3 (lb/ft3)",
+            "unit": 24,
+            "state": 0,
+            "description": "Residual density of component 3",
+            "value": 99.885,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 324,
+        "fields": {
+            "created_at": "2021-01-26T01:53:41.996Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "AI_3 (1/s)",
+            "unit": 9,
+            "state": 0,
+            "description": "Pre-exponential factor for component 3",
+            "value": 0,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 325,
+        "fields": {
+            "created_at": "2021-01-26T01:53:42.000Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "PSII_3 (-)",
+            "unit": 13,
+            "state": 0,
+            "description": "Density factor exponent for component 3",
+            "value": 0,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 326,
+        "fields": {
+            "created_at": "2021-01-26T01:53:42.003Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "EI_3 (R)",
+            "unit": 13,
+            "state": 0,
+            "description": "Activation temperature for reaction 3",
+            "value": 0,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.constproperty",
+        "pk": 327,
+        "fields": {
+            "created_at": "2021-01-26T01:53:42.007Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "TRACI_3 (R)",
+            "unit": 13,
+            "state": 0,
+            "description": "Minimum temperature for reaction 3",
+            "value": 90000,
+            "software": 2
+        }
+    },
+    {
+        "model": "materials.matrixproperty",
+        "pk": 16,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.553Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "K_v (m2)",
+            "description": "matrix elements",
+            "unit": 19,
+            "value": "(1.6e-11 0 0 0 1.6e-11 0 0 0 1.6e-11)",
+            "state": 0,
+            "software": 1
+        }
+    },
+    {
+        "model": "materials.matrixproperty",
+        "pk": 17,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.556Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "name": "K_c (m2)",
+            "description": "matrix elements",
+            "unit": 19,
+            "value": "(2e-11 0 0 0 2e-11 0 0 0 2e-11)",
+            "state": 1,
+            "software": 1
+        }
+    },
+    {
+        "model": "software.exportformat",
+        "pk": 67,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.654Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "software_version": 4,
+            "description": "<p>PATO 2.3.1: TACOT 3.0.3</p>"
+        }
+    },
+    {
+        "model": "software.exportformat",
+        "pk": 68,
+        "fields": {
+            "created_at": "2021-01-26T01:53:28.659Z",
+            "last_modified": "2021-01-26",
+            "modified_by": null,
+            "material_version": 9,
+            "software_version": 2,
+            "description": "<p>FIAT 3: TACOT 3.0.3</p>"
+        }
+    }
+]
