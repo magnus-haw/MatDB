@@ -119,19 +119,31 @@ MATERIAL_STATES = (
     (2,'Pyrolysis')
 )
 
-class AbstractVariableProperty(BaseModel):
-    material_version = models.ForeignKey(MaterialVersion, on_delete=models.CASCADE)
+class AbstractMaterialProperty(BaseModel):
     name = models.CharField(max_length=50)
+    description = models.TextField()
     unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
     state = models.PositiveIntegerField(choices=MATERIAL_STATES, default=0, verbose_name='Material state')
+
+    def __str__(self):
+        return self.name
+
+class MaterialProperty(AbstractMaterialProperty):
+    
+    class Meta:
+        verbose_name_plural = "Material properties"
+
+class AbstractVariableProperty(BaseModel):
+    property = models.ForeignKey(MaterialProperty,on_delete=models.CASCADE, null=True,blank=False)
+    material_version = models.ForeignKey(MaterialVersion, on_delete=models.CASCADE)
+    
     # using SI units for p,T
     p = MyArrayField(null=True, blank=True, verbose_name='Pressure [Pa]') #Pascals
     T = MyArrayField(null=True, blank=True, verbose_name='Temperature [K]') #Kelvin
     values = MyArrayField(null=True, blank=True)
-    software = models.ForeignKey("software.Software",on_delete=models.CASCADE, null=True)
     
     def __str__(self):
-        return self.name
+        return self.property.name + "_" + str(self.material_version)
 
     def interp(self,new_p,new_T):
         f = interpolate.interp2d(self.p,self.T,self.values, kind='linear')
@@ -146,16 +158,13 @@ class VariableProperty(AbstractVariableProperty):
         verbose_name_plural = "Variable properties"
 
 class AbstractConstProperty(BaseModel):
-    material_version = models.ForeignKey(MaterialVersion,on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
-    state = models.PositiveIntegerField(choices=MATERIAL_STATES,default=0)
-    description = models.TextField(null=True,blank=True)
+    property = models.ForeignKey(MaterialProperty,on_delete=models.CASCADE, null=True,blank=False)
+    material_version = models.ForeignKey(MaterialVersion, on_delete=models.CASCADE)
     value = models.FloatField(null=True)
     software = models.ForeignKey("software.Software",on_delete=models.CASCADE, null=True)
         
     def __str__(self):
-        return self.name
+        return self.property.name + "_" + str(self.material_version)
 
     class Meta:
         abstract = True
@@ -166,16 +175,14 @@ class ConstProperty(AbstractConstProperty):
         verbose_name_plural = "Constant properties"
 
 class AbstractMatrixProperty(BaseModel):
-    material_version = models.ForeignKey(MaterialVersion,on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    description = models.TextField(null=True,blank=True)
-    unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
+    property = models.ForeignKey(MaterialProperty,on_delete=models.CASCADE, null=True,blank=False)
+    material_version = models.ForeignKey(MaterialVersion, on_delete=models.CASCADE)
+
     value = models.CharField(max_length=500)
     state = models.PositiveIntegerField(choices=MATERIAL_STATES,default=0)
-    software = models.ForeignKey("software.Software",on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.name
+        return self.property.name + "_" + str(self.material_version)
 
     class Meta:
         abstract = True

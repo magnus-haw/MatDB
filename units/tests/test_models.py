@@ -202,8 +202,6 @@ class UnitSystemModelTest(TestCase):
         c5 = ComboUnit.objects.create(name='Kelvin',symbol='degK')
         BaseUnitPower.objects.create(combo=c5, prefix=None, unit=K, power =1)
 
-        
-
         si = UnitSystem.objects.create(name="SI", description="metric", length_unit = m,
         mass_unit = kg, time_unit = s, temp_unit=K, luminous_unit= lum, mole_unit=mole,
         current_unit = A)

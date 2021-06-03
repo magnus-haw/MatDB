@@ -1,6 +1,6 @@
 from django.db import models
 from materials.models import AbstractMaterial, AbstractMaterialVersion, AbstractVariableProperty
-from materials.models import AbstractConstProperty, AbstractMatrixProperty
+from materials.models import AbstractConstProperty, AbstractMatrixProperty, AbstractMaterialProperty
 
 
 #################################################################################
@@ -23,7 +23,16 @@ class ITARMaterialVersion(AbstractMaterialVersion):
     class Meta:
         verbose_name_plural = "ITAR Material versions"
 
+class ITARMaterialProperty(AbstractMaterialProperty):
+
+    def isITAR(self):
+        return True
+    
+    class Meta:
+        verbose_name_plural = "ITAR Material properties"
+
 class ITARVariableProperty(AbstractVariableProperty):
+    property = models.ForeignKey(ITARMaterialProperty,on_delete=models.CASCADE, null=True,blank=False)
     material_version = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
 
     def isITAR(self):
@@ -33,6 +42,7 @@ class ITARVariableProperty(AbstractVariableProperty):
         verbose_name_plural = "ITAR Variable properties"
 
 class ITARConstProperty(AbstractConstProperty):
+    property = models.ForeignKey(ITARMaterialProperty,on_delete=models.CASCADE, null=True,blank=False)
     material_version = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
     
     def isITAR(self):
@@ -42,6 +52,7 @@ class ITARConstProperty(AbstractConstProperty):
         verbose_name_plural = "ITAR Constant properties"
 
 class ITARMatrixProperty(AbstractMatrixProperty):
+    property = models.ForeignKey(ITARMaterialProperty,on_delete=models.CASCADE, null=True,blank=False)
     material_version = models.ForeignKey(ITARMaterialVersion,on_delete=models.CASCADE)
 
     def isITAR(self):
