@@ -1,9 +1,8 @@
 #from django.shortcuts import render
 import pandas as pd
 import numpy as np
-import re
 import sys
-from io import StringIO
+import pathlib
 
 ### Loading files into database.
 
@@ -38,45 +37,45 @@ def parse_PATO_material_csv(fpath_or_buffer):
 
     return PATO_fmt
 
+
+
 def upload_PATO_fmt(matName, Pform, ITAR=False):
     if ITAR:
-        mat = ITARMaterial.objects.get(name=matName)
+        mat,created = ITARMaterial.objects.get_or_create(name=matName)
         matv,flag = ITARMaterialVersion.objects.get_or_create(material=mat, version=Pform['version'])
     else:
-        mat = Material.objects.get(name=matName)
+        mat,created = Material.objects.get_or_create(name=matName)
         matv,flag = MaterialVersion.objects.get_or_create(material=mat, version=Pform['version'])
     
-    units = ComboUnit.objects.all()
-    none_unit = ComboUnit.objects.get(name='None')
+    mat.save()
     matv.save()
-
+    
     p = Pform['vparams']['Pressure(Pa)']
     T = Pform['vparams']['Temperature(K)']
     for key in Pform['vparams'].keys():
         if key not in ['Pressure(Pa)', 'Temperature(K)']:
+            label, unit = parse_quantity_header(key)
+            print(label,unit)
+            print(type(matv))
+
             if ITAR:
-                vprop,fl = ITARVariableProperty.objects.get_or_create(material_version=matv, name=key)
+                mp, created_mp = ITARMaterialProperty.objects.get_or_create(name=label,unit=unit,description=label)
+                mpi, created_mpi = ITARMaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
+                vprop,fl = ITARVariableProperty.objects.get_or_create(property_instance=mpi)
             else:
-                vprop,fl = VariableProperty.objects.get_or_create(material_version=matv, name=key)
+                mp, created_mp = MaterialProperty.objects.get_or_create(name=label,unit=unit,description=label)
+                mpi, created_mpi = MaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
+                vprop,fl = VariableProperty.objects.get_or_create(property_instance=mpi)
             vprop.p = p
             vprop.T = T
             vprop.values = Pform['vparams'][key]
             if 'virgin' in key:
-                vprop.state = 0
+                mpi.state = 0
             elif 'char' in key:
-                vprop.state = 1
+                mpi.state = 1
             else:
-                vprop.state = 2
+                mpi.state = 2
                 print(key)
-
-            # extract units
-            vprop.unit = none_unit
-            ustrings = re.findall('\(.*?\)',key)
-            if len(ustrings) == 1 and ustrings[0] != '(-)':
-                for unit in units:
-                    if ustrings[0][1:-1] in unit.alternate_names:
-                        vprop.unit = unit
-            vprop.save()
     
     names, vals, notes = Pform['const_names'],Pform['const_vals'],Pform['const_notes']
     for i in range(0,len(names)):
@@ -87,32 +86,33 @@ def upload_PATO_fmt(matName, Pform, ITAR=False):
             state = 2
 
         # extract units
-        ustrings = re.findall('\((?s:.*)\)',names[i])
-        if len(ustrings) == 1 and ustrings[0] != '(-)':
-            for unit in units:
-                l = re.split("\r\n", unit.alternate_names)
-                if ustrings[0][1:-1] in l:
-                    myunit = unit
-        else:
-            myunit = none_unit
+        label, myunit = parse_quantity_header(key)
+
+        # add matrix unit
         if vals[i][0] == '(':
             if ITAR:
-                mx,flag = ITARMatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state)
+                mp, created_mp = ITARMaterialProperty.objects.get_or_create(name=label,unit=myunit,description=label)
+                mpi, created_mpi = ITARMaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
+                mx,flag = ITARMatrixProperty.objects.get_or_create()
             else:
-                mx,flag = MatrixProperty.objects.get_or_create(name=names[i],material_version=matv,state=state)
-            mx.unit = myunit
+                mp, created_mp = MaterialProperty.objects.get_or_create(name=label,unit=myunit,description=label)
+                mpi, created_mpi = MaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
+                mx,flag = MatrixProperty.objects.get_or_create()
             mx.value=vals[i]
-            mx.description = "matrix elements"
             mx.save()
 
+        # add const unit
         else:
             if ITAR:
-                const,flag = ITARConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i])
+                mp, created_mp = ITARMaterialProperty.objects.get_or_create(name=label,unit=myunit,description=label)
+                mpi, created_mpi = ITARMaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
+                const,flag = ITARConstProperty.objects.get_or_create()
             else:
-                const,flag = ConstProperty.objects.get_or_create(material_version = matv, state=state, name=names[i])
-            const.description=notes[i]
+                mp, created_mp = MaterialProperty.objects.get_or_create(name=label,unit=myunit,description=label)
+                mpi, created_mpi = MaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
+                const,flag = ConstProperty.objects.get_or_create()
+
             const.value=float(vals[i])
-            const.unit = myunit
             const.save()
 
 if __name__=="__main__":
@@ -122,9 +122,12 @@ if __name__=="__main__":
     from django.core.wsgi import get_wsgi_application
     application = get_wsgi_application()
     
-    from materials.models import MaterialVersion, Material, ConstProperty, MatrixProperty, VariableProperty
-    from itarmaterials.models import ITARMaterial, ITARMaterialVersion, ITARConstProperty, ITARMatrixProperty, ITARVariableProperty
+    from materials.models import MaterialVersion, Material, ConstProperty, MatrixProperty
+    from materials.models import MaterialProperty, VariableProperty, MaterialPropertyInstance
+    from itarmaterials.models import ITARMaterial, ITARMaterialVersion, ITARConstProperty, ITARMatrixProperty
+    from itarmaterials.models import ITARMaterialPropertyInstance, ITARMaterialProperty, ITARVariableProperty
     from units.models import ComboUnit
+    from units.utils import parse_quantity_header
     from datetime import date
 
     if "delete" in sys.argv:
@@ -136,9 +139,10 @@ if __name__=="__main__":
         ITARVariableProperty.objects.all().delete()
 
     if "update" in sys.argv:
-        folder = "materials/"
-        fname1 = folder + "Cork_v1.csv"
-        fname2 = folder + "TACOT_v3.csv"
+        folder = pathlib.Path(__file__).parent.absolute()
+        fname1 = folder / "load_data_scripts" / "Cork_v1.csv"
+        fname2 = folder / "load_data_scripts" / "TACOT_v3.0.0.csv"
+        fname3 = folder / "load_data_scripts" / "HEEET_v4.0.1.csv"
 
         # Load Cork file
         Pform1 = parse_PATO_material_csv(fname1)
@@ -149,8 +153,8 @@ if __name__=="__main__":
         upload_PATO_fmt('TACOT', Pform2)
 
         # Load TACOT file
-        Pform2 = parse_PATO_material_csv(fname2)
-        upload_PATO_fmt('HEEET', Pform2, ITAR=True)
+        Pform3 = parse_PATO_material_csv(fname3)
+        upload_PATO_fmt('HEEET', Pform3, ITAR=True)
 
     if "print" in sys.argv:
         print("ConstProperty.objects.count()=",end="")

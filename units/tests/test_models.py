@@ -1,7 +1,8 @@
 from django.test import TestCase
 
 import numpy as np
-from units.models import BaseUnit, BaseUnitPower, ComboUnit, BaseUnitPrefix, UnitSystem
+from units.models import AlternateUnitSymbol, BaseUnit, BaseUnitPower, ComboUnit, BaseUnitPrefix, UnitSystem
+from units.utils import parse_quantity_header, get_label_and_unit
 
 class BaseUnitModelTest(TestCase):
     @classmethod
@@ -91,6 +92,7 @@ class ComboUnitModelTest(TestCase):
         BaseUnitPower.objects.create(combo=c, prefix=None, unit=m, power =2)
         BaseUnitPower.objects.create(combo=c, prefix=None, unit=s, power =-1)
         BaseUnitPower.objects.create(combo=c, prefix=None, unit=K, power =-1)
+        AlternateUnitSymbol.objects.create(combounit=c, symbol='m2/(K s')
 
         c2 = ComboUnit.objects.create(name='ft2/ms',symbol='ft2/ms')
         BaseUnitPower.objects.create(combo=c2, prefix=None, unit=ft, power =2)
@@ -162,6 +164,38 @@ class ComboUnitModelTest(TestCase):
     def test__str__(self):
         c = ComboUnit.objects.get(name='m2/(K s)')
         self.assertEqual(str(c), 'm2/(K s)')
+
+    def test_get_label_and_unit(self):
+        header_list = ['Temperature(K)','cp_virgin(J/kg/K)','h_virgin(J/kg)','ki_virgin(W/m/K)',"h[2][3](m2/s2)"]
+        label_list = ['Temperature','cp_virgin','h_virgin','ki_virgin',"h[2][3]"]
+        symbol_list = ['K','J/kg/K','J/kg','W/m/K',"m2/s2"]
+        for h,l,s in zip(header_list,label_list,symbol_list):
+            lb, sm = get_label_and_unit(h)
+            self.assertEqual(l,lb)
+            self.assertEqual(s,sm)
+        
+        header_list = ['Temperature[K]','cp_virgin[J/kg/K]','h_virgin[J/kg]','ki_virgin[W/m/(K)]',"h[m2/s2]"]
+        label_list = ['Temperature','cp_virgin','h_virgin','ki_virgin',"h"]
+        symbol_list = ['K','J/kg/K','J/kg','W/m/(K)',"m2/s2"]
+        for h,l,s in zip(header_list,label_list,symbol_list):
+            lb, sm = get_label_and_unit(h,brackets='[]')
+            self.assertEqual(l,lb)
+            self.assertEqual(s,sm)
+
+    def test_parse_quantity_header(self):
+        c = ComboUnit.objects.get(name='m2/(K s)')
+        name = "my test (m2/(K s))"
+        lb,unit = parse_quantity_header(name)
+
+        self.assertEqual(lb,'my test')
+        self.assertEqual(c,unit)
+
+        F = ComboUnit.objects.get(symbol='degF')
+        name = "my test (degF)"
+        lb,unit = parse_quantity_header(name)
+
+        self.assertEqual(lb,'my test')
+        self.assertEqual(F,unit)
 
 
 class UnitSystemModelTest(TestCase):

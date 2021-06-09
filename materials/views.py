@@ -37,7 +37,10 @@ def index(request):
     nmat = Material.objects.count()
     mats = Material.objects.all()
     itars = ITARMaterial.objects.all()
-    last_modified = mats.latest('last_modified').last_modified
+    try:
+        last_modified = mats.latest('last_modified').last_modified
+    except:
+        last_modified = None
 
     context = {
         'materials':mats,
@@ -50,7 +53,7 @@ def index(request):
 def material_view(request,matpk):
     mat = get_object_or_404(Material, pk=matpk)
     refs = Reference.objects.filter(materials = mat)
-    print(refs)
+
     form_error = False
     form_success = False
     form_error_mesg = ""
@@ -116,9 +119,11 @@ def material_version_view(request,matv_pk):
         # raise Http404
         return HttpResponseRedirect(request.path_info)
 
-    constprops = matv.constproperty_set.all().order_by('software','state')
-    varprops = matv.variableproperty_set.all().order_by('software','state')
-    matrixprops = matv.matrixproperty_set.all().order_by('software','state')
+    props = matv.materialpropertyinstance_set.all()
+
+    constprops = ConstProperty.objects.filter(property_instance__in = props)
+    varprops = VariableProperty.objects.filter(property_instance__in = props)
+    matrixprops = MatrixProperty.objects.filter(property_instance__in = props)
     download = ExportFormat.objects.filter(material_version=matv)
     software = Software.objects.all()
 

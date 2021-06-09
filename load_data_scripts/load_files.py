@@ -41,7 +41,7 @@ if __name__=="__main__":
     from django.core.wsgi import get_wsgi_application
     application = get_wsgi_application()
     
-    from materials.models import MaterialVersion, Material, ConstProperty, VariableProperties, MatrixProperty
+    from materials.models import MaterialVersion, Material, ConstProperty, VariableProperty, MatrixProperty
     from datetime import date
     dt = date.fromisoformat('2020-01-01')
 
