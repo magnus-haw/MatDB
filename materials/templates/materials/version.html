@@ -108,7 +108,7 @@
           <div class="card-body" id="varprops">
             <table class="simple-table" style="font-size: 12px;">
             <tr>
-              <th></th>
+              <th style='font-weight: bold'>Name</th>
               <th style='font-weight: bold'>State</th>
               <th style='font-weight: bold'>Pressure</th>
               <th style='font-weight: bold'>Temperature</th>
@@ -120,17 +120,17 @@
             <tr>
               <th style='font-weight: bold'>
               {% if var.isITAR %}
-                <a href="{% url 'itarvprop-detail' var.pk %}">{{var.name}}</a>
+                <a href="{% url 'itarvprop-detail' var.pk %}">{{var.property_instance.property.name}}</a>
               {% else %}
-                <a href="{% url 'vprop-detail' var.pk %}">{{var.name}}</a>
+                <a href="{% url 'vprop-detail' var.pk %}">{{var.property_instance.property.name}}</a>
               {% endif %}
               </th>
-              <td>{{var.get_state_display}}</td>
+              <td>{{var.property_instance.get_state_display}}</td>
               <td>{{var.p.min}}&nbsp;&#8658;&nbsp;{{var.p.max|stringformat:"1.2e"}}</td>
               <td>{{var.T.min}}&nbsp;&#8658;&nbsp;{{var.T.max}}</td>
               <td style="text-align:right">{{var.values.min|stringformat:".2e"}}&nbsp;&#8658;&nbsp;{{var.values.max|stringformat:".2e"}}</td>
-              <td>{{var.unit.symbol}}</td>
-              <td>{{var.software.name}}</td>
+              <td>{{var.property_instance.property.unit.symbol}}</td>
+              <td></td>
             </tr>
             {% endfor %}
             
@@ -164,12 +164,12 @@
             </tr>
             {% for prop in constprops %}
                <tr>
-                 <th style='font-weight: bold'>{{prop.name}}</th>
-                 <td>{{prop.get_state_display}}</td>
+                 <th style='font-weight: bold'>{{prop.property_instance.property.name}}</th>
+                 <td>{{prop.property_instance.get_state_display}}</td>
                  <th>{{prop.value}}</th>
-                 <th>{{prop.unit.symbol}}</th>
-                 <th>{{prop.description}}</th>
-                 <th>{{prop.software.name}}</th>
+                 <th>{{prop.property_instance.property.unit.symbol}}</th>
+                 <th>{{prop.property_instance.property.description}}</th>
+                 <th></th>
                </tr>
             {% endfor %}
             </table>
@@ -191,11 +191,11 @@
             </tr>
             {% for prop in matrixprops %}
                <tr>
-                 <th style="font-weight: bold">{{prop.name}}</th>
+                 <th style="font-weight: bold">{{prop.property_instance.property.name}}</th>
                  <th>{{prop.value}}</th>
-                 <th>{{prop.unit.symbol}}</th>
-                 <th>{{prop.description}}</th>
-                 <th>{{prop.software.name}}</th>
+                 <th>{{prop.property_instance.property.unit.symbol}}</th>
+                 <th>{{prop.property_instance.property.description}}</th>
+                 <th></th>
                </tr>
             {% endfor %}
             </table>

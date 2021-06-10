@@ -55,8 +55,6 @@ def upload_PATO_fmt(matName, Pform, ITAR=False):
     for key in Pform['vparams'].keys():
         if key not in ['Pressure(Pa)', 'Temperature(K)']:
             label, unit = parse_quantity_header(key)
-            print(label,unit)
-            print(type(matv))
 
             if ITAR:
                 mp, created_mp = ITARMaterialProperty.objects.get_or_create(name=label,unit=unit,description=label)
@@ -76,9 +74,13 @@ def upload_PATO_fmt(matName, Pform, ITAR=False):
             else:
                 mpi.state = 2
                 print(key)
+            mpi.save()
+            vprop.save()
     
     names, vals, notes = Pform['const_names'],Pform['const_vals'],Pform['const_notes']
     for i in range(0,len(names)):
+
+        
         state =0
         if "char" in notes[i]:
             state = 1
@@ -86,34 +88,38 @@ def upload_PATO_fmt(matName, Pform, ITAR=False):
             state = 2
 
         # extract units
-        label, myunit = parse_quantity_header(key)
-
-        # add matrix unit
+        label, myunit = parse_quantity_header(names[i])
+        print(names[i], label)
+        # print(label,myunit)
+        # print(type(matv))
+        ### add matrix unit
         if vals[i][0] == '(':
             if ITAR:
                 mp, created_mp = ITARMaterialProperty.objects.get_or_create(name=label,unit=myunit,description=label)
                 mpi, created_mpi = ITARMaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
-                mx,flag = ITARMatrixProperty.objects.get_or_create()
+                mx,flag = ITARMatrixProperty.objects.get_or_create(property_instance=mpi)
             else:
                 mp, created_mp = MaterialProperty.objects.get_or_create(name=label,unit=myunit,description=label)
                 mpi, created_mpi = MaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
-                mx,flag = MatrixProperty.objects.get_or_create()
+                mx,flag = MatrixProperty.objects.get_or_create(property_instance=mpi)
             mx.value=vals[i]
             mx.save()
+            mpi.state = state; mpi.save()
 
         # add const unit
         else:
             if ITAR:
                 mp, created_mp = ITARMaterialProperty.objects.get_or_create(name=label,unit=myunit,description=label)
                 mpi, created_mpi = ITARMaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
-                const,flag = ITARConstProperty.objects.get_or_create()
+                const,flag = ITARConstProperty.objects.get_or_create(property_instance=mpi)
             else:
                 mp, created_mp = MaterialProperty.objects.get_or_create(name=label,unit=myunit,description=label)
                 mpi, created_mpi = MaterialPropertyInstance.objects.get_or_create(material_version=matv, property=mp)
-                const,flag = ConstProperty.objects.get_or_create()
+                const,flag = ConstProperty.objects.get_or_create(property_instance=mpi)
 
             const.value=float(vals[i])
             const.save()
+            mpi.state = state; mpi.save()
 
 if __name__=="__main__":
     import os

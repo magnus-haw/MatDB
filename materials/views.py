@@ -173,7 +173,7 @@ def vprop_view(request,vprop_pk):
     items = zip(vprop.p,vprop.T,vprop.values)
 
     ### Plotting section
-    fig = figure(x_axis_label="Temp (K)", y_axis_label=vprop.name + " ["+vprop.unit.symbol+"]",plot_width =650,plot_height =300,sizing_mode='scale_width')
+    fig = figure(x_axis_label="Temp (K)", y_axis_label=vprop.property_instance.property.name + " ["+vprop.property_instance.property.unit.symbol+"]",plot_width =650,plot_height =300,sizing_mode='scale_width')
     for i in range(0,len(plist)):
         p = plist[i]
         T = vprop.T[vprop.p == p]

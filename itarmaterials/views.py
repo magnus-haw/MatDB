@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from .models import ITARMaterial, ITARMaterialVersion, ITARVariableProperty
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from .models import ITARMaterial, ITARMaterialVersion, ITARVariableProperty, ITARConstProperty, ITARMatrixProperty
 from sources.models import Reference
 
 from materials.views import mycolors
@@ -91,9 +91,11 @@ def itarmaterial_version_view(request,matv_pk):
         # raise Http404
         return HttpResponseRedirect(request.path_info)
 
-    constprops = matv.itarconstproperty_set.all().order_by('software')
-    varprops = matv.itarvariableproperty_set.all().order_by('software','state')
-    matrixprops = matv.itarmatrixproperty_set.all().order_by('software','state')
+    props = matv.itarmaterialpropertyinstance_set.all()
+
+    constprops = ITARConstProperty.objects.filter(property_instance__in = props)
+    varprops = ITARVariableProperty.objects.filter(property_instance__in = props)
+    matrixprops = ITARMatrixProperty.objects.filter(property_instance__in = props)
     download = ITARExportFormat.objects.filter(material_version=matv)
     software = Software.objects.all()
 

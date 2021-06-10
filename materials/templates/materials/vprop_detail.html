@@ -4,9 +4,9 @@
 
 {% block header %}
   <!-- Bokeh plotting JS and CSS -->
-  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.3.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.2.3.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.2.3.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.2.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.3.2.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.3.2.min.js" crossorigin="anonymous"></script>
 
   {{ script | safe }}
 {% endblock %}
@@ -14,7 +14,7 @@
 
 {% block content %}
 <!-- Title -->
-<h1 class="mt-4 mb-3">{{vprop.name}}&nbsp;&nbsp;{{vprop.material_version.material.name}}&nbsp;{{vprop.material_version.version}}</h1><hr>
+<h1 class="mt-4 mb-3">{{vprop.property_instance.property.name}}&nbsp;&nbsp;{{vprop.material_version.material.name}}&nbsp;{{vprop.property_instance.material_version.version}}</h1><hr>
 <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="/materials/">Materials</a>
@@ -22,20 +22,20 @@
       
         {% if vprop.isITAR %}
         <li class="breadcrumb-item">
-          <a href="{% url 'itarmaterial-detail' vprop.material_version.material.pk %}">{{vprop.material_version.material.name}}</a>
+          <a href="{% url 'itarmaterial-detail' vprop.property_instance.material_version.material.pk %}">{{vprop.property_instance.material_version.material.name}}</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{% url 'itarversion-detail' vprop.material_version.pk %}">{{vprop.material_version.version}}</a>
+          <a href="{% url 'itarversion-detail' vprop.property_instance.material_version.pk %}">{{vprop.property_instance.material_version.version}}</a>
         </li>
         {% else %}
         <li class="breadcrumb-item">
-          <a href="{% url 'material-detail' vprop.material_version.material.pk %}">{{vprop.material_version.material.name}}</a>
+          <a href="{% url 'material-detail' vprop.property_instance.material_version.material.pk %}">{{vprop.property_instance.material_version.material.name}}</a>
         </li>
         <li class="breadcrumb-item">
-          <a href="{% url 'version-detail' vprop.material_version.pk %}">{{vprop.material_version.version}}</a>
+          <a href="{% url 'version-detail' vprop.property_instance.material_version.pk %}">{{vprop.property_instance.material_version.version}}</a>
         </li>
         {% endif %}
-        <li class="breadcrumb-item active">{{vprop.name}}</li>
+        <li class="breadcrumb-item active">{{vprop.property_instance.property.name}}</li>
 </ol>
 
 <div class="row">
@@ -74,7 +74,7 @@
             <tr>
               <th style='font-weight: bold'>Pressure(Pa)</th>
               <th style='font-weight: bold'>Temperature(K)</th>
-              <th style='font-weight: bold'>{{vprop.unit.symbol}}</th>
+              <th style='font-weight: bold'>{{vprop.property_instance.property.unit.symbol}}</th>
             </tr>
             {% for p,T,val in items %}
                <tr>

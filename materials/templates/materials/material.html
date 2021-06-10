@@ -27,7 +27,9 @@
     <!-- Intro Content -->
     <div class="row">
       <div class="col-lg-6">
+        {% if material.image %}
         <img class="img-fluid rounded mb-4" src="{{material.image.url}}" alt="">
+        {% endif %}
       </div>
       <div class="col-lg-6">
         <h2>Overview</h2>
