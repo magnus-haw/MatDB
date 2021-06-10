@@ -15,7 +15,7 @@ from .forms import UploadMaterialVersion
 
 from itarmaterials.models import ITARMaterial
 from software.file_formatters import PATO_formatter, FIAT_formatter, ICARUS_formatter
-from software.models import ExportFormat, SoftwareVersion, Software
+from software.models import SoftwareVersion, Software
 from sources.models import Reference, Tutorial
 
 import numpy as np
@@ -124,8 +124,6 @@ def material_version_view(request,matv_pk):
     constprops = ConstProperty.objects.filter(property_instance__in = props)
     varprops = VariableProperty.objects.filter(property_instance__in = props)
     matrixprops = MatrixProperty.objects.filter(property_instance__in = props)
-    download = ExportFormat.objects.filter(material_version=matv)
-    software = Software.objects.all()
 
     if request.method == 'POST' and 'views' in request.POST:
         soft_name = request.POST['views']
@@ -140,13 +138,13 @@ def material_version_view(request,matv_pk):
             varprops = matv.variableproperty_set.all().order_by('state').filter(software=software_i)
             matrixprops = matv.matrixproperty_set.all().order_by('state').filter(software=software_i)
 
+    software_versions = SoftwareVersion.objects.filter(can_export=True)
     context = {
             'matv':matv,
             'constprops':constprops,
             'varprops':varprops,
             'matrixprops':matrixprops,
-            'download':download,
-            'software':software,
+            'software_versions':software_versions,
             }
     return render(request, 'materials/version.html', context = context)
 

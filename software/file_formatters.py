@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from datetime import date
 
-from .models import ExportFormat, Software, SoftwareVersion, ITARExportFormat
+from .models import Software, SoftwareVersion
 from itarmaterials.models import ITARMaterial, ITARMaterialVersion, ITARVariableProperty, ITARConstProperty, ITARMatrixProperty
 from materials.models import MaterialVersion, Material, VariableProperty, ConstProperty, MatrixProperty
 from units.models import ComboUnit
@@ -61,8 +61,8 @@ class Formatter(object):
 
     # Create an error file
     def error_file(self, string):
-        folder_base = settings.STATIC_ROOT + "/tmp"
-        file_name = folder_base + "/error.txt"
+        folder_base = settings.STATIC_ROOT / "tmp"
+        file_name = folder_base / "error.txt"
         f = open(file_name, "w")
         msg = "Error for the \""+ self.code_name + "\" export of the material \"" + self.mat_name + "\" version \"" + self.mat_version + "\"\n"
         f.write(msg+string)
@@ -93,9 +93,9 @@ class Formatter(object):
         self.code_version = softv.version
 
         # Folder name
-        folder_base = settings.STATIC_ROOT + "/tmp"
+        folder_base = settings.STATIC_ROOT / "tmp"
         folder_name = self.code_name + "_" + self.mat_name + "_" + self.mat_version
-        full_folder_name = folder_base + "/" + folder_name
+        full_folder_name = str(folder_base / folder_name)
         # Clean folders
         if os.path.exists(full_folder_name):
             os.system("rm -rf " + full_folder_name)
@@ -131,9 +131,9 @@ class PATO_formatter(Formatter):
         self.code_version = softv.version
 
         # Folder name
-        folder_base = settings.STATIC_ROOT + "/tmp"
+        folder_base = settings.STATIC_ROOT / "tmp"
         folder_name = self.code_name + "_" + self.mat_name + "_" + self.mat_version
-        full_folder_name = folder_base + "/" + folder_name
+        full_folder_name = str(folder_base / folder_name)
         # Clean folders
         if os.path.exists(full_folder_name):
             os.system("rm -rf " + full_folder_name)
@@ -141,9 +141,9 @@ class PATO_formatter(Formatter):
         os.chdir(folder_base)
         os.system("rm -f " + folder_name+".zip")
         # Create virgin and char files
-        char_file_name = full_folder_name+"/char"
+        char_file_name = full_folder_name + "/char"
         f_char = open(char_file_name, "w")
-        virgin_file_name = full_folder_name+"/virgin"
+        virgin_file_name = full_folder_name + "/virgin"
         f_virgin = open(virgin_file_name, "w")
         names = ["// p(Pa)","T(K)","cp(J/kg/K)","h(J/kg)","ki(W/m/K)","kj(W/m/K)","kk(W/m/K)","emissivity","absorptivity"]
         header_char = "// " + self.mat_name + "_" + self.mat_version + "\n"  \
@@ -157,7 +157,7 @@ class PATO_formatter(Formatter):
         header_virgin = header_char.replace("char","virgin")
         f_virgin.write(header_virgin)
         software = Software.objects.get(name="PATO")
-        varprops = self.matv.variableproperty_set.all().order_by('state').filter(software=software)
+        varprops = self.matv.materialpropertyinstance_set.all().order_by('state').filter()
         data_char = []
         data_p_char = []
         data_T_char = []
@@ -196,7 +196,7 @@ class PATO_formatter(Formatter):
         f_char.close()
         f_virgin.close()
         # Create the constant properties file
-        const_file_name = full_folder_name+"/constantProperties"
+        const_file_name = full_folder_name + "constantProperties"
         f_const = open(const_file_name, "w")
         header_const = "// Constant property directory. Update as needed.\n" \
                     + "FoamFile\n{\n\tversion     2.0;\n\tformat      ascii;\n\tclass       dictionary;\n\tobject      constantProperties;\n}" \
@@ -396,9 +396,9 @@ class FIAT_formatter(Formatter):
         self.code_version = softv.version
 
         # Folder name
-        folder_base = settings.STATIC_ROOT + "/tmp"
+        folder_base = settings.STATIC_ROOT / "tmp"
         file_name = "matdatabase_" + self.code_name + "_" + self.mat_name + "_" + self.mat_version + ".txt"
-        full_file_name = folder_base + "/" + file_name
+        full_file_name = folder_base / file_name
         # Clean folders
         if os.path.exists(full_file_name):
             os.system("rm -f " + full_file_name)
@@ -415,10 +415,11 @@ class FIAT_formatter(Formatter):
                 + "   {0:<3}{1:<19}{2:<6}{3:<5}".format(1,self.mat_name,self.mat_version,int(self.matv.constproperty_set.get(name="Type").value))+ self.matv.material.description + "\n\n" \
                 + "{0:<19}{1:<6}{2:<5}".format(self.mat_name,self.mat_version,0)+ self.matv.material.description + "\n"
         f.write(header)
-        software = Software.objects.get(name="FIAT")
+        software = softv.software
         # Constant properties
         names = []
-        constProps = self.matv.constproperty_set.all().filter(software=software)
+        constProps = ConstProperty.objects.filter(property_instance__property__in=softv.material_properties.all()) & ConstProperty.objects.filter(property_instance__material_version=matv)
+        #constProps = self.matv.materialpropertyinstance_set.all().filter(software=software)
         for i in constProps:
             names.append(i.name)
 
@@ -448,7 +449,8 @@ class FIAT_formatter(Formatter):
                     return self.error_file("\""+i[1]+"\" not found in ConstProperty")
 
         # Variable properties
-        varprops=self.matv.variableproperty_set.all().filter(software=software)
+        varprops = VariableProperty.objects.filter(property_instance__property__in=softv.material_properties.all()) & VariableProperty.objects.filter(property_instance__material_version=matv)
+        #varprops=self.matv.variableproperty_set.all().filter(software=software)
         names=[]
         for i in varprops:
             names.append(i.name)

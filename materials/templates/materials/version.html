@@ -32,11 +32,11 @@
                 <div class="dropdown">
                     <button class="dropbtn btn btn-primary">Export</button>
                     <div id="myDropdown" class="dropdown-content">
-                        {% for i in download %}
-                        <form method="post">
-                        {% csrf_token %}
-                        <button class="downloadbutton" type="submit" name="export_codes" value="{{i.software_version.pk}}">{{i.software_version.software.name}}</button>
-                        </form>
+                        {% for i in software_versions %}
+                          <form method="post">
+                          {% csrf_token %}
+                          <button class="downloadbutton" type="submit" name="export_codes" value="{{i.pk}}">{{i}}</button>
+                          </form>
                         {% endfor %}
                     </div>
                 </div>
@@ -130,7 +130,11 @@
               <td>{{var.T.min}}&nbsp;&#8658;&nbsp;{{var.T.max}}</td>
               <td style="text-align:right">{{var.values.min|stringformat:".2e"}}&nbsp;&#8658;&nbsp;{{var.values.max|stringformat:".2e"}}</td>
               <td>{{var.property_instance.property.unit.symbol}}</td>
-              <td></td>
+              <td>{% for soft in var.property_instance.property.software_versions.all %} 
+                {% if soft.is_latest %}
+                  {{soft}},&nbsp;
+                {% endif %}
+              {% endfor %}</td>
             </tr>
             {% endfor %}
             
@@ -169,7 +173,11 @@
                  <th>{{prop.value}}</th>
                  <th>{{prop.property_instance.property.unit.symbol}}</th>
                  <th>{{prop.property_instance.property.description}}</th>
-                 <th></th>
+                 <th>{% for soft in prop.property_instance.property.software_versions.all %} 
+                {% if soft.is_latest %}
+                  {{soft}},&nbsp;
+                {% endif %}
+              {% endfor %}</th>
                </tr>
             {% endfor %}
             </table>
@@ -195,7 +203,11 @@
                  <th>{{prop.value}}</th>
                  <th>{{prop.property_instance.property.unit.symbol}}</th>
                  <th>{{prop.property_instance.property.description}}</th>
-                 <th></th>
+                 <th>{% for soft in prop.property_instance.property.software_versions.all %} 
+                {% if soft.is_latest %}
+                  {{soft}},&nbsp;
+                {% endif %}
+              {% endfor %}</th>
                </tr>
             {% endfor %}
             </table>

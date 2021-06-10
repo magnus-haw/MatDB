@@ -1,5 +1,5 @@
 from django.db import models
-from materials.models import AbstractMaterial, AbstractMaterialVersion, AbstractVariableProperty, AbstractMaterialProperty
+from materials.models import AbstractMaterial, AbstractMaterialVersion, AbstractVariableProperty
 from materials.models import AbstractConstProperty, AbstractMatrixProperty, AbstractMaterialPropertyInstance
 
 #################################################################################
@@ -22,14 +22,7 @@ class ITARMaterialVersion(AbstractMaterialVersion):
     class Meta:
         verbose_name_plural = "ITAR Material versions"
 
-
-class ITARMaterialProperty(AbstractMaterialProperty):
-    
-    class Meta:
-        verbose_name_plural = "ITAR Material properties"
-
 class ITARMaterialPropertyInstance(AbstractMaterialPropertyInstance):
-    property = models.ForeignKey(ITARMaterialProperty,on_delete=models.CASCADE, null=True,blank=False)
     material_version = models.ForeignKey(ITARMaterialVersion, on_delete=models.CASCADE)
 
     def isITAR(self):

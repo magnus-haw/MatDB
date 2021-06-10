@@ -5,7 +5,7 @@ from sources.models import Reference
 from materials.views import mycolors
 from materials.forms import UploadITARMaterialVersion
 from software.file_formatters import PATO_formatter, FIAT_formatter, ICARUS_formatter
-from software.models import ExportFormat, SoftwareVersion, Software, ITARExportFormat
+from software.models import SoftwareVersion, Software
 from sources.models import Reference, Tutorial
 
 import numpy as np
@@ -96,7 +96,7 @@ def itarmaterial_version_view(request,matv_pk):
     constprops = ITARConstProperty.objects.filter(property_instance__in = props)
     varprops = ITARVariableProperty.objects.filter(property_instance__in = props)
     matrixprops = ITARMatrixProperty.objects.filter(property_instance__in = props)
-    download = ITARExportFormat.objects.filter(material_version=matv)
+    
     software = Software.objects.all()
 
     if request.method == 'POST' and 'views' in request.POST:
@@ -117,7 +117,6 @@ def itarmaterial_version_view(request,matv_pk):
             'constprops':constprops,
             'varprops':varprops,
             'matrixprops':matrixprops,
-            'download':download,
             'software':software,
             }
     return render(request, 'materials/version.html', context = context)
