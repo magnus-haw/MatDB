@@ -36,7 +36,6 @@ def itarmaterial_view(request, matpk):
                 pform.upload_file(csvfile, ITAR=True)
                 print("finished upload")
                 matv = ITARMaterialVersion.objects.get(material=form.cleaned_data["material"], version=form.cleaned_data["version"])
-                pform.update_export_format(matv)
                 # redirect to a new URL:
                 form_success = True
             except Exception as inst:

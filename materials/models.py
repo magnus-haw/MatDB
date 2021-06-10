@@ -121,6 +121,7 @@ MATERIAL_STATES = (
 
 class AbstractMaterialProperty(BaseModel):
     name = models.CharField(max_length=50)
+    symbol = models.CharField(max_length=10, null=True, blank=True)
     description = RichTextField(blank=True,null=True)
     unit = models.ForeignKey(ComboUnit,on_delete=models.SET_NULL, null=True,blank=True)
 

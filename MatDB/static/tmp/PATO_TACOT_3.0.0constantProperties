@@ -1,0 +1,131 @@
+// Constant property directory. Update as needed.
+FoamFile
+{
+	version     2.0;
+	format      ascii;
+	class       dictionary;
+	object      constantProperties;
+}// * * * * * *  Units * * * * * [kg m s K mol A cd] * * * * * * * * * * * * * //
+// e.g. W: kg m^2 s^{-3}        [1 2 -3 0 0 0 0]
+
+/****           Universal constants                                             ****/
+R               R               [1 2 -2 -1 -1 0 0]      8.314471469;
+sigmaPlanck     sigmaPlanck     [1 0 -3 -1 0 0 0]       5.6697e-8;
+
+/***            Anisotropic conductivity parameters: main directions and linear factors         ***/
+//              kxyz = tP & kijk' & P
+// 1- Express the main directions (ijk) of the diagonal conductivity matrix in the basis of the mesh (xyz) 
+//                                                      (i j k)                 ex. rotation a (in radians) around axis z
+tP              tP              [0 0 0 0 0 0 0]         (1 0 0   // x           (cosa -sina 0
+                                                         0 1 0   // y            sina  cosa 0
+                                                         0 0 1); // z            0       0  1)
+// 2 - Linear factors
+kiCoef          kiCoef          [0 0 0 0 0 0 0]         1;       // to multiply column ki of the input files 'char' and 'virgin' by a linear factor: ki' = kiCoef*ki
+kjCoef          kjCoef          [0 0 0 0 0 0 0]         1;       // idem for kj
+kkCoef          kkCoef          [0 0 0 0 0 0 0]         1;       // idem for kk
+
+// nSolidPhases: nSolidPhases
+nSolidPhases 2.0;
+
+// rhoI[1]: rhoI[1]
+rhoI[1] rhoI[1] [0 0 0 0 0 0 0] 1600.0;
+
+// epsI[1]: epsI[1]
+epsI[1] epsI[1] [0 0 0 0 0 0 0] 0.1;
+
+// rhoI[2]: rhoI[2]
+rhoI[2] rhoI[2] [0 0 0 0 0 0 0] 1200.0;
+
+// epsI[2]: epsI[2]
+epsI[2] epsI[2] [0 0 0 0 0 0 0] 0.1;
+
+// eps_g_v: eps_g_v
+eps_g_v eps_g_v [0 0 0 0 0 0 0] 0.8;
+
+// eps_g_c: eps_g_c
+eps_g_c eps_g_c [0 0 0 0 0 0 0] 0.85;
+
+// Zx[C]: Zx[C]
+Zx[C] 0.206;
+
+// Zx[H]: Zx[H]
+Zx[H] 0.679;
+
+// Zx[O]: Zx[O]
+Zx[O] 0.115;
+
+// F[2][1]: F[2][1]
+F[2][1] F[2][1] [0 0 0 0 0 0 0] 0.25;
+
+// A[2][1]: A[2][1]
+A[2][1] A[2][1] [0 0 -1 0 0 0 0] 12000.0;
+
+// E[2][1]: E[2][1]
+E[2][1] E[2][1] [1 2 -2 0 -1 0 0] 71130.89;
+
+// m[2][1]: m[2][1]
+m[2][1] m[2][1] [0 0 0 0 0 0 0] 3.0;
+
+// n[2][1]: n[2][1]
+n[2][1] n[2][1] [0 0 0 0 0 0 0] 0.0;
+
+// T[2][1]: T[2][1]
+T[2][1] T[2][1] [0 0 0 1 0 0 0] 333.0;
+
+// h[2][1]: h[2][1]
+h[2][1] h[2][1] [0 2 -2 0 0 0 0] -4000000.0;
+
+// F[2][2]: F[2][2]
+F[2][2] F[2][2] [0 0 0 0 0 0 0] 0.19;
+
+// A[2][2]: A[2][2]
+A[2][2] A[2][2] [0 0 -1 0 0 0 0] 498000000.0;
+
+// E[2][2]: E[2][2]
+E[2][2] E[2][2] [1 2 -2 0 -1 0 0] 170000.0;
+
+// m[2][2]: m[2][2]
+m[2][2] m[2][2] [0 0 0 0 0 0 0] 3.0;
+
+// n[2][2]: n[2][2]
+n[2][2] n[2][2] [0 0 0 0 0 0 0] 0.0;
+
+// T[2][2]: T[2][2]
+T[2][2] T[2][2] [0 0 0 1 0 0 0] 556.0;
+
+// h[2][2]: h[2][2]
+h[2][2] h[2][2] [0 2 -2 0 0 0 0] -4000000.0;
+
+// F[2][3]: F[2][3]
+F[2][3] F[2][3] [0 0 0 0 0 0 0] 0.06;
+
+// A[2][3]: A[2][3]
+A[2][3] A[2][3] [0 0 -1 0 0 0 0] 498000000.0;
+
+// E[2][3]: E[2][3]
+E[2][3] E[2][3] [1 2 -2 0 -1 0 0] 170000.0;
+
+// m[2][3]: m[2][3]
+m[2][3] m[2][3] [0 0 0 0 0 0 0] 3.0;
+
+// n[2][3]: n[2][3]
+n[2][3] n[2][3] [0 0 0 0 0 0 0] 0.0;
+
+// T[2][3]: T[2][3]
+T[2][3] T[2][3] [0 0 0 1 0 0 0] 556.0;
+
+// h[2][3]: h[2][3]
+h[2][3] h[2][3] [0 2 -2 0 0 0 0] -4000000.0;
+
+// nPyroReac[1]: nPyroReac[1]
+nPyroReac[1] 0.0;
+
+// nPyroReac[2]: nPyroReac[2]
+nPyroReac[2] 3.0;
+
+// K_v: K_v
+K_v K_v [0 2 0 0 0 0 0] (1.6e-11 0 0 0 1.6e-11 0 0 0 1.6e-11);
+
+// K_c: K_c
+K_c K_c [0 2 0 0 0 0 0] (2e-11 0 0 0 2e-11 0 0 0 2e-11);
+

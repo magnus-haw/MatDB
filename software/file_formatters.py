@@ -69,20 +69,6 @@ class Formatter(object):
         f.close()
         return file_name
 
-    # Update the ExportFormat for a new material version
-    def update_export_format(self, matv):
-        softwares = Software.objects.all()
-        for soft in softwares:
-            softv = SoftwareVersion.objects.filter(software=soft).order_by('-version_value').first()
-            if softv is not None:
-                description = soft.name + " " + softv.version + ": " + matv.material.name + " " + matv.version
-                if isinstance(matv, MaterialVersion):
-                    exp, flag = ExportFormat.objects.get_or_create(material_version=matv, software_version=softv, description=description)
-                    exp.save()
-                elif isinstance(matv, ITARMaterialVersion):
-                    exp, flag = ITARExportFormat.objects.get_or_create(material_version=matv, software_version=softv, description=description)
-                    exp.save()
-
     # Create a dummy file with the code name, the material name and the material version.
     def export_file(self, matv, softv):
         self.matv = matv
@@ -156,8 +142,7 @@ class PATO_formatter(Formatter):
         f_char.write(header_char)
         header_virgin = header_char.replace("char","virgin")
         f_virgin.write(header_virgin)
-        software = Software.objects.get(name="PATO")
-        varprops = self.matv.materialpropertyinstance_set.all().order_by('state').filter()
+        varprops = VariableProperty.objects.filter(property_instance__property__in=softv.material_properties.all()) & VariableProperty.objects.filter(property_instance__material_version=matv)
         data_char = []
         data_p_char = []
         data_T_char = []
@@ -165,7 +150,7 @@ class PATO_formatter(Formatter):
         data_p_virgin = []
         data_T_virgin = []
         for var in varprops:
-            if var.state == 1: # char
+            if var.property_instance.state == 1: # char
                 if len(data_p_char)>0 and not check_arrays(data_p_char,var.p):
                     sys.exit("Error: pressure is different between variables.")
                 data_p_char = var.p
@@ -173,7 +158,7 @@ class PATO_formatter(Formatter):
                     sys.exit("Error: temperature is different between variables.")
                 data_T_char = var.T
                 data_char.append(var.values)
-            if var.state == 0: # virgin
+            if var.property_instance.state == 0: # virgin
                 if len(data_p_virgin)>0 and not check_arrays(data_p_virgin,var.p):
                     sys.exit("Error: pressure is different between variables.")
                 data_p_virgin = var.p
@@ -196,7 +181,7 @@ class PATO_formatter(Formatter):
         f_char.close()
         f_virgin.close()
         # Create the constant properties file
-        const_file_name = full_folder_name + "constantProperties"
+        const_file_name = full_folder_name + "/constantProperties"
         f_const = open(const_file_name, "w")
         header_const = "// Constant property directory. Update as needed.\n" \
                     + "FoamFile\n{\n\tversion     2.0;\n\tformat      ascii;\n\tclass       dictionary;\n\tobject      constantProperties;\n}" \
@@ -218,11 +203,11 @@ class PATO_formatter(Formatter):
                     + "kkCoef          kkCoef          [0 0 0 0 0 0 0]         1;       // idem for kk\n\n"
 
         f_const.write(header_const)
-        constprops = self.matv.constproperty_set.all().filter(software=software)
+        constprops = ConstProperty.objects.filter(property_instance__property__in=softv.material_properties.all()) & ConstProperty.objects.filter(property_instance__material_version=matv)
         order=[1,0,2,5,3,4,6] # OpenFOAM units order [Mass Length Time Temperature Quantity	Current Luminous]
         scalar_list=["nSolidPhases","Zx[","nPyroReac["]
         for i in constprops:
-            dims_tmp = i.unit.dims()
+            dims_tmp = i.property_instance.property.unit.dims()
             dims=dims_tmp.copy()
             for j, order_j in enumerate(order):
                 dims[order_j] = dims_tmp[j]
@@ -232,9 +217,9 @@ class PATO_formatter(Formatter):
                 if j == len(dims) - 1:
                     end = "]"
                 units_to_OF = units_to_OF + str(int(dims_j)) + end
-            name = i.name
+            name = i.property_instance.property.name
             name = name.split(" ")[0] # remove the units in the name
-            f_const.write("// " + name + ": " + i.description + "\n")
+            f_const.write("// " + name + ": " + i.property_instance.property.description + "\n")
             scalar = False
             for j in scalar_list:
                 if (name.find(j) >= 0):
@@ -243,9 +228,11 @@ class PATO_formatter(Formatter):
                 f_const.write(name  + " " + str(i.value) + ";\n\n")
             else:
                 f_const.write(name + " " + name + " " + units_to_OF + " " + str(i.value) + ";\n\n")
-        matrixprops = self.matv.matrixproperty_set.all().filter(software=software)
+
+        matrixprops = MatrixProperty.objects.filter(property_instance__property__in=softv.material_properties.all()) & MatrixProperty.objects.filter(property_instance__material_version=matv)
+        
         for i in matrixprops:
-            dims_tmp = i.unit.dims()
+            dims_tmp = i.property_instance.property.unit.dims()
             dims = dims_tmp.copy()
             for j, order_j in enumerate(order):
                 dims[order_j] = dims_tmp[j]
@@ -255,9 +242,9 @@ class PATO_formatter(Formatter):
                 if j == len(dims) - 1:
                     end = "]"
                 units_to_OF = units_to_OF + str(int(dims_j)) + end
-            name = i.name
+            name = i.property_instance.property.name
             name = name.split(" ")[0]  # remove the units in the name
-            f_const.write("// " + name + ": " + i.description + "\n")
+            f_const.write("// " + name + ": " + i.property_instance.property.description + "\n")
             f_const.write(name + " " + name + " " + units_to_OF + " " + str(i.value) + ";\n\n")
         f_const.close()
         zip_file = zipfile.ZipFile(folder_name+".zip", 'w', zipfile.ZIP_DEFLATED)
@@ -398,7 +385,7 @@ class FIAT_formatter(Formatter):
         # Folder name
         folder_base = settings.STATIC_ROOT / "tmp"
         file_name = "matdatabase_" + self.code_name + "_" + self.mat_name + "_" + self.mat_version + ".txt"
-        full_file_name = folder_base / file_name
+        full_file_name = str(folder_base / file_name)
         # Clean folders
         if os.path.exists(full_file_name):
             os.system("rm -f " + full_file_name)
@@ -406,6 +393,7 @@ class FIAT_formatter(Formatter):
             os.makedirs(folder_base)
         # Create the material database file
         f = open(full_file_name, "w")
+
         if self.matv.constproperty_set.all().filter(name="Type").count() == 0:
             return self.error_file("\"Type\" not found in ConstProperty")
         header = "FIAT Material Database File, last modified on " + str(self.matv.last_modified) + " at NASA Ames\n" \

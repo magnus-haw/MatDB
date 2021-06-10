@@ -50,7 +50,13 @@ class AbstractSoftwareVersion(BaseModel):
         ordering = ['-version_value']
 
 class Software(AbstractSoftware):
-    pass
+    
+    def get_latest_version(self):
+        try: 
+            ret = self.softwareversion_set.all().order_by('-version_value')[0]
+        except:
+            ret = None
+        return ret
 
 class SoftwareVersion(AbstractSoftwareVersion):
 

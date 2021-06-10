@@ -70,7 +70,7 @@ def material_view(request,matpk):
                 pform.upload_file(csvfile)
                 print("finished upload")
                 matv = MaterialVersion.objects.get(material=form.cleaned_data["material"], version=form.cleaned_data["version"])
-                pform.update_export_format(matv)
+
                 # redirect to a new URL:
                 form_success = True
             except Exception as inst:
@@ -120,7 +120,9 @@ def material_version_view(request,matv_pk):
         return HttpResponseRedirect(request.path_info)
 
     props = matv.materialpropertyinstance_set.all()
-
+    software = Software.objects.all()
+    software_versions = SoftwareVersion.objects.filter(can_export=True)
+    
     constprops = ConstProperty.objects.filter(property_instance__in = props)
     varprops = VariableProperty.objects.filter(property_instance__in = props)
     matrixprops = MatrixProperty.objects.filter(property_instance__in = props)
@@ -129,22 +131,22 @@ def material_version_view(request,matv_pk):
         soft_name = request.POST['views']
         print(soft_name)
         if soft_name == "All":
-            constprops = matv.constproperty_set.all().order_by('software','state')
-            varprops = matv.variableproperty_set.all().order_by('software', 'state')
-            matrixprops = matv.matrixproperty_set.all().order_by('software', 'state')
+            constprops = ConstProperty.objects.filter(property_instance__in = props).order_by('property_instance__state')
+            varprops = VariableProperty.objects.filter(property_instance__in = props).order_by('property_instance__state')
+            matrixprops = MatrixProperty.objects.filter(property_instance__in = props).order_by('property_instance__state')
         else:
-            software_i = Software.objects.get(name=soft_name)
-            constprops = matv.constproperty_set.all().filter(software=software_i)
-            varprops = matv.variableproperty_set.all().order_by('state').filter(software=software_i)
-            matrixprops = matv.matrixproperty_set.all().order_by('state').filter(software=software_i)
+            softv = Software.objects.get(name=soft_name).get_latest_version()
+            varprops = VariableProperty.objects.filter(property_instance__property__in=softv.material_properties.all()) & VariableProperty.objects.filter(property_instance__material_version=matv)
+            constprops = ConstProperty.objects.filter(property_instance__property__in=softv.material_properties.all()) & ConstProperty.objects.filter(property_instance__material_version=matv)
+            matrixprops = MatrixProperty.objects.filter(property_instance__property__in=softv.material_properties.all()) & MatrixProperty.objects.filter(property_instance__material_version=matv)
 
-    software_versions = SoftwareVersion.objects.filter(can_export=True)
     context = {
             'matv':matv,
             'constprops':constprops,
             'varprops':varprops,
             'matrixprops':matrixprops,
             'software_versions':software_versions,
+            'software':software,
             }
     return render(request, 'materials/version.html', context = context)
 
